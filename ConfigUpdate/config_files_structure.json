@@ -1,0 +1,274 @@
+{
+	"tables": {
+		"config_day_type": {
+			"columns": {
+				"day_type_id": {
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				},
+				"day_type": {
+					"type": "VARCHAR(255)"
+				}
+			}
+		},
+		"config_day_type_dow": {
+			"columns": {
+				"day_type_id": {
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				},
+				"day_of_the_week": {
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				}
+			}
+		},
+		"config_threshold": {
+			"columns": {
+				"threshold_id": {
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				},
+				"threshold_name": {
+					"type": "VARCHAR(255)",
+					"null": false
+				},
+				"threshold_type": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"threshold_priority": {
+					"null": false,
+					"type": "INT"
+				},
+				"min_max_equal": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"upper_lower":{
+					"type": "VARCHAR(255)"
+				},
+				"parent_threshold_id":{
+					"type": "VARCHAR(255)"
+				},
+				"parent_child":{
+					"null": false,
+					"type": "INT"
+				}
+			}
+		},
+		"config_passenger_arrival_rate": {
+			"columns": {
+				"day_type_id": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"time_slice_id": {
+					"type": "VARCHAR(255)",
+					"null": false
+				},
+				"from_stop_id": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"to_stop_id": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"passenger_arrival_rate": {
+					"null": false,
+					"type": "float"
+				}
+			}
+		},
+		"config_passenger_od_load_cr":{
+			"columns": {
+				"route_id":{
+					"type": "VARCHAR(255)"
+				},
+				"trip_id":{
+					"type": "VARCHAR(255)"
+				},
+				"trip_short_name":{
+					"type": "VARCHAR(255)"
+				},
+				"from_stop_sequence":{
+					"type": "INT"
+				},
+				"from_stop_id":{
+					"type": "VARCHAR(255)"
+				},
+				"to_stop_sequence":{
+					"type": "INT"
+				},
+				"to_stop_id":{
+					"type": "VARCHAR(255)"
+				},
+				"from_stop_passenger_on":{
+					"type": "INT"
+				},
+				"to_stop_passenger_off":{
+					"type": "INT"
+				},
+				"from_passenger_on_flag":{
+					"type": "INT"
+				},
+				"to_stop_passenger_off_flag":{
+					"type": "INT"
+				},
+				"sum_passenger_off_subset":{
+					"type": "INT"
+				},
+				"num_passenger_off_subset":{
+					"type": "INT"
+				}
+			}
+		},
+		"config_threshold_calculation": {
+			"columns": {
+				"threshold_calculation_id": {
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				},
+				"threshold_id": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"multiply_by": {
+					"null": false,
+					"type": "FLOAT"
+				},
+				"add_to": {
+					"null": false,
+					"type": "FLOAT"
+				}
+			}
+		},
+		"config_time_period": {
+			"columns": {
+				"time_period_id": {
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				},
+				"day_type": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"time_period_sequence": {
+					"null": false,
+					"type": "INT"
+				},
+				"time_period_type": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"time_period_name": {
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"time_period_start_time": {
+					"type": "TIME(7)"
+				},
+				"time_period_end_time": {
+					"type": "TIME(7)"
+				},
+				"time_period_start_time_sec": {
+					"null": false,
+					"type": "INT"
+				},
+				"time_period_end_time_sec": {
+					"null": false,
+					"type": "INT"
+				}
+			}
+		},
+		"config_time_slice": {
+			"columns": {
+				"time_slice_id": {
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				},
+				"time_slice_start_sec": {
+					"type": "INT"
+				},
+				"time_slice_end_sec": {
+					"type": "INT"
+				},
+				"time_slice_start_date_time": {
+					"type": "TIME(7)"
+				},
+				"time_slice_end_date_time": {
+					"type": "TIME(7)"
+				}
+			}
+		},
+		"config_mode_threshold":{
+			"columns":{
+				"route_type":{
+					"type": "INT"
+				},
+				"threshold_id":{
+					"null": false,
+					"type": "VARCHAR(255)"
+				}
+			}
+		},
+		"config_stop_order_flag_threshold":{
+			"columns":{
+				"stop_order_flag":{
+					"type": "INT"
+				},
+				"threshold_id":{
+					"null": false,
+					"type": "VARCHAR(255)"
+				}
+			}
+		},
+		"config_prediction_threshold":{
+			"columns":{
+				"threshold_id":{
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"threshold_name":{
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"threshold_type":{
+					"null": false,
+					"type": "VARCHAR(255)"
+				},
+				"route_type":{
+					"type": "INT"
+				},
+				"bin_lower":{
+					"type": "INT"
+				},
+				"bin_upper":{
+					"type": "INT"
+				},
+				"pred_error_threshold_lower":{
+					"type": "INT"
+				},
+				"pred_error_threshold_upper":{
+					"type": "INT"
+				}
+			}
+		},
+		"config_dashboard_threshold":{
+			"columns":{
+				"dashboard_id": {
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				},
+				"dashboard_name": {
+					"type": "VARCHAR(255)",
+					"null": false
+				},
+				"threshold_id":{
+					"type": "VARCHAR(255)"
+				}
+			}
+		}
+	}
+}

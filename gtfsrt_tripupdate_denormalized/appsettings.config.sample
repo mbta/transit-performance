@@ -1,0 +1,7 @@
+  <appSettings file="appsettings.config">
+    <add key="FILEPATH" value=""/> <!--full path to where the downloaded TripUpdates.pb is saved-->
+    <add key="JSONPATH" value=""/> <!--full path to where the json version of the TripUpdates.pb is saved-->
+    <add key="URL" value=""/> <!--URL for endpoint hosting TripUpdates.pb-->
+    <add key="FREQUENCY" value="30"/> <!--interval (in seconds) at which the TripUpdates.pb file is fetched and processed-->
+    <add key="ACCEPTROUTE" value=""/> <!--comma-separated list of GTFS route_id's that should be accepted/processed when processing the contents of TripUpdates.pb-->
+  </appSettings>

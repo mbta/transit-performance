@@ -1,0 +1,3 @@
+  <connectionStrings>
+    <add name="DatabaseConnectionString" providerName="System.Data.ProviderName" connectionString="" /> <!--fill in connectionString-->
+  </connectionStrings>

@@ -1,0 +1,6 @@
+  <appSettings>
+    <add key="ConfigStructureFile" value=""/> <!--full path to config_files_structure.json-->
+    <add key ="LastModifiedDateFile" value=""/> <!--full path to lastmodified.txt-->
+    <add key ="ConfigFilesPath" value=""/> <!--full path to location of config files-->
+    <add key ="DatabaseName" value="transit_performance"/>
+  </appSettings>

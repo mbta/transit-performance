@@ -1,0 +1,7 @@
+  <appSettings>
+    <add key ="FilePath" value=""/> <!--full path to where the downloaded VehiclePositions.pb is saved-->
+    <add key ="URL" value=""/> <!--URL for endpoint hosting VehiclePositions.pb-->
+    <add key ="IgnoreRoutes" value=""/> <!--comma-separated list of GTFS route_id's that should be ignored when processing the contents of VehiclePositions.pb-->
+    <add key ="IncludeEntitiesWithoutTrip" value="false"/> <!--this should always be set to false-->
+    <add key ="Frequency" value="5"/> <!--interval (in seconds) at which the VehiclePositions.pb file is fetched and processed-->
+  </appSettings>

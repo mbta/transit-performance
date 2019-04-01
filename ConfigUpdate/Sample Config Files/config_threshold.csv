@@ -1,0 +1,32 @@
+﻿threshold_id,threshold_name,threshold_type,threshold_priority,min_max_equal,upper_lower,parent_threshold_id,parent_child
+threshold_id_01,Headway,wait_time_headway_based,1,equal,upper,,0
+threshold_id_02,Big Gap,wait_time_headway_based,2,min,upper,,0
+threshold_id_03,2X Headway,wait_time_headway_based,3,equal,upper,,0
+threshold_id_04,delayed < 3 min.,travel_time,1,equal,upper,,0
+threshold_id_05,delayed < 6 min.,travel_time,2,equal,upper,,0
+threshold_id_06,delayed < 10 min.,travel_time,3,equal,upper,,0
+threshold_id_07,delayed < 5 min.,wait_time_schedule_based,1,equal,upper,,0
+threshold_id_08,delayed < 10 min.,wait_time_schedule_based,2,equal,upper,,0
+threshold_id_09,delayed < 20 min.,wait_time_schedule_based,3,equal,upper,,0
+threshold_id_10,delayed < 5 min.,travel_time,1,equal,upper,,0
+threshold_id_11,delayed < 10 min.,travel_time,2,equal,upper,,0
+threshold_id_12,delayed < 20 min.,travel_time,3,equal,upper,,0
+threshold_id_13,90 seconds,trip_headway_based,4,equal,upper,,0
+threshold_id_14,early > 0 min. and late < 3 min.,wait_time_schedule_based,1,equal,both,threshold_id_23,1
+threshold_id_15,early > 0 min.,wait_time_schedule_based,1,equal,lower,threshold_id_14,2
+threshold_id_16,late < 3 min.,wait_time_schedule_based,1,equal,upper,threshold_id_14,2
+threshold_id_17,early > 1 min. and late < 6 min.,wait_time_schedule_based,1,equal,both,threshold_id_23,1
+threshold_id_18,early > 1 min.,wait_time_schedule_based,1,equal,lower,threshold_id_17,2
+threshold_id_19,late < 6 min.,wait_time_schedule_based,1,equal,upper,threshold_id_17,2
+threshold_id_20,late < 5 min.,wait_time_schedule_based,1,equal,upper,threshold_id_23,0
+threshold_id_21,Headway + 3 min.,wait_time_headway_based,1,equal,upper,threshold_id_23,0
+threshold_id_22,delayed 20%,travel_time,1,equal,upper,threshold_id_23,0
+threshold_id_23,On-Time,reliability,1,equal,,,0
+threshold_id_24,180 seconds,trip_headway_based,5,equal,upper,,0
+threshold_id_25,360 seconds,trip_headway_based,6,equal,upper,,0
+threshold_id_26,"> 90 seconds, <= 180 seconds",trip_headway_based,7,equal,both,,0
+threshold_id_27,> 90 seconds,trip_headway_based,8,equal,lower,threshold_id_26,2
+threshold_id_28,<= 180 seconds,trip_headway_based,9,equal,upper,threshold_id_26,2
+threshold_id_29,"> 180 seconds, <= 360 seconds",trip_headway_based,10,equal,both,,0
+threshold_id_30,> 180 seconds,trip_headway_based,11,equal,lower,threshold_id_29,2
+threshold_id_31,<= 360 seconds,trip_headway_based,12,equal,upper,threshold_id_29,2

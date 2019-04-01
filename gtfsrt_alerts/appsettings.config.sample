@@ -1,0 +1,10 @@
+  <appSettings file="appsettings.config">
+    <add key="SERVICENAME" value=""/> <!--name of service-->
+    <add key="SERVICEDESCRIPTION" value=""/> <!--description of service-->
+    <add key="FILEPATH" value=""/> <!--full path to where the downloaded ServiceAlerts.pb is saved-->
+    <add key="JSONPATH" value=""/> <!--full path to where the json version of the ServiceAlerts.pb is saved-->
+    <add key="URL" value=""/> <!--URL for endpoint hosting ServiceAlerts.pb-->
+    <add key="RESETTIME" value="3:00 AM"/>
+    <add key="FREQUENCY" value="30"/> <!--interval (in seconds) at which the ServiceAlerts.pb file is fetched and processed-->
+    <add key="PERIOD_END_CHANGE_SECONDS" value="300"/> <!--interval (in seconds) for which a change in active_period end time is recorded as a new version-->
+  </appSettings>

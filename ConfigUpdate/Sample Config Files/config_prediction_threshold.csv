@@ -1,0 +1,5 @@
+﻿threshold_id,threshold_name,threshold_type,route_type,bin_lower,bin_upper,pred_error_threshold_lower,pred_error_threshold_upper
+prediction_threshold_id_01,0 min <= time away <= 5 min,prediction,1,0,300,-60,60
+prediction_threshold_id_02,5 min < time away <= 10 min,prediction,1,301,600,-120,180
+prediction_threshold_id_01,0 min <= time away <= 5 min,prediction,0,0,300,-60,60
+prediction_threshold_id_02,5 min < time away <= 10 min,prediction,0,301,600,-120,180

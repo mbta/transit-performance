@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TripUpdateDataSet" targetNamespace="http://tempuri.org/TripUpdateDataSet.xsd" xmlns:mstns="http://tempuri.org/TripUpdateDataSet.xsd" xmlns="http://tempuri.org/TripUpdateDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="mbta_performanceConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="mbta_performanceConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.gtfsrt_tripupdate_denormalized.Properties.Settings.GlobalReference.Default.mbta_performanceConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GtfsRtTripUpdateDenormalizedTableAdapter" GeneratorDataComponentClassName="GtfsRtTripUpdateDenormalizedTableAdapter" Name="GtfsRtTripUpdateDenormalized" UserDataComponentName="GtfsRtTripUpdateDenormalizedTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="mbta_performanceConnectionString (Settings)" DbObjectName="mbta_performance.dbo.gtfsrt_tripupdate_denormalized" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        gtfs_realtime_version, incrementality, header_timestamp, feed_entity_id, trip_id, trip_delay, route_id, direction_id, trip_start_date, trip_start_time, trip_schedule_relationship, vehicle_id, vehicle_label, 
+                         vehicle_license_plate, vehicle_timestamp, stop_id, stop_sequence, predicted_arrival_time, predicted_arrival_delay, predicted_arrival_uncertainty, predicted_departure_time, predicted_departure_delay, 
+                         predicted_departure_uncertainty, stop_schedule_relationship
+FROM            gtfsrt_tripupdate_denormalized</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="gtfs_realtime_version" DataSetColumn="gtfs_realtime_version" />
+              <Mapping SourceColumn="incrementality" DataSetColumn="incrementality" />
+              <Mapping SourceColumn="header_timestamp" DataSetColumn="header_timestamp" />
+              <Mapping SourceColumn="feed_entity_id" DataSetColumn="feed_entity_id" />
+              <Mapping SourceColumn="trip_id" DataSetColumn="trip_id" />
+              <Mapping SourceColumn="trip_delay" DataSetColumn="trip_delay" />
+              <Mapping SourceColumn="route_id" DataSetColumn="route_id" />
+              <Mapping SourceColumn="direction_id" DataSetColumn="direction_id" />
+              <Mapping SourceColumn="trip_start_date" DataSetColumn="trip_start_date" />
+              <Mapping SourceColumn="trip_start_time" DataSetColumn="trip_start_time" />
+              <Mapping SourceColumn="trip_schedule_relationship" DataSetColumn="trip_schedule_relationship" />
+              <Mapping SourceColumn="vehicle_id" DataSetColumn="vehicle_id" />
+              <Mapping SourceColumn="vehicle_label" DataSetColumn="vehicle_label" />
+              <Mapping SourceColumn="vehicle_license_plate" DataSetColumn="vehicle_license_plate" />
+              <Mapping SourceColumn="vehicle_timestamp" DataSetColumn="vehicle_timestamp" />
+              <Mapping SourceColumn="stop_id" DataSetColumn="stop_id" />
+              <Mapping SourceColumn="stop_sequence" DataSetColumn="stop_sequence" />
+              <Mapping SourceColumn="predicted_arrival_time" DataSetColumn="predicted_arrival_time" />
+              <Mapping SourceColumn="predicted_arrival_delay" DataSetColumn="predicted_arrival_delay" />
+              <Mapping SourceColumn="predicted_arrival_uncertainty" DataSetColumn="predicted_arrival_uncertainty" />
+              <Mapping SourceColumn="predicted_departure_time" DataSetColumn="predicted_departure_time" />
+              <Mapping SourceColumn="predicted_departure_delay" DataSetColumn="predicted_departure_delay" />
+              <Mapping SourceColumn="predicted_departure_uncertainty" DataSetColumn="predicted_departure_uncertainty" />
+              <Mapping SourceColumn="stop_schedule_relationship" DataSetColumn="stop_schedule_relationship" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="TripUpdateDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="TripUpdateDataSet" msprop:Generator_UserDSName="TripUpdateDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="GtfsRtTripUpdateDenormalized" msprop:Generator_TableClassName="GtfsRtTripUpdateDenormalizedDataTable" msprop:Generator_TableVarName="tableGtfsRtTripUpdateDenormalized" msprop:Generator_TablePropName="GtfsRtTripUpdateDenormalized" msprop:Generator_RowDeletingName="GtfsRtTripUpdateDenormalizedRowDeleting" msprop:Generator_RowChangingName="GtfsRtTripUpdateDenormalizedRowChanging" msprop:Generator_RowEvHandlerName="GtfsRtTripUpdateDenormalizedRowChangeEventHandler" msprop:Generator_RowDeletedName="GtfsRtTripUpdateDenormalizedRowDeleted" msprop:Generator_UserTableName="GtfsRtTripUpdateDenormalized" msprop:Generator_RowChangedName="GtfsRtTripUpdateDenormalizedRowChanged" msprop:Generator_RowEvArgName="GtfsRtTripUpdateDenormalizedRowChangeEvent" msprop:Generator_RowClassName="GtfsRtTripUpdateDenormalizedRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="gtfs_realtime_version" msprop:Generator_ColumnVarNameInTable="columngtfs_realtime_version" msprop:Generator_ColumnPropNameInRow="gtfs_realtime_version" msprop:Generator_ColumnPropNameInTable="gtfs_realtime_versionColumn" msprop:Generator_UserColumnName="gtfs_realtime_version" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="incrementality" msprop:Generator_ColumnVarNameInTable="columnincrementality" msprop:Generator_ColumnPropNameInRow="incrementality" msprop:Generator_ColumnPropNameInTable="incrementalityColumn" msprop:Generator_UserColumnName="incrementality" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="header_timestamp" msprop:Generator_ColumnVarNameInTable="columnheader_timestamp" msprop:Generator_ColumnPropNameInRow="header_timestamp" msprop:Generator_ColumnPropNameInTable="header_timestampColumn" msprop:Generator_UserColumnName="header_timestamp" type="xs:int" />
+              <xs:element name="feed_entity_id" msprop:Generator_ColumnVarNameInTable="columnfeed_entity_id" msprop:Generator_ColumnPropNameInRow="feed_entity_id" msprop:Generator_ColumnPropNameInTable="feed_entity_idColumn" msprop:Generator_UserColumnName="feed_entity_id" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="trip_id" msprop:Generator_ColumnVarNameInTable="columntrip_id" msprop:Generator_ColumnPropNameInRow="trip_id" msprop:Generator_ColumnPropNameInTable="trip_idColumn" msprop:Generator_UserColumnName="trip_id">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="trip_delay" msprop:Generator_ColumnVarNameInTable="columntrip_delay" msprop:Generator_ColumnPropNameInRow="trip_delay" msprop:Generator_ColumnPropNameInTable="trip_delayColumn" msprop:Generator_UserColumnName="trip_delay" type="xs:int" minOccurs="0" />
+              <xs:element name="route_id" msprop:Generator_ColumnVarNameInTable="columnroute_id" msprop:Generator_ColumnPropNameInRow="route_id" msprop:Generator_ColumnPropNameInTable="route_idColumn" msprop:Generator_UserColumnName="route_id" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="direction_id" msprop:Generator_ColumnVarNameInTable="columndirection_id" msprop:Generator_ColumnPropNameInRow="direction_id" msprop:Generator_ColumnPropNameInTable="direction_idColumn" msprop:Generator_UserColumnName="direction_id" type="xs:int" minOccurs="0" />
+              <xs:element name="trip_start_date" msprop:Generator_ColumnVarNameInTable="columntrip_start_date" msprop:Generator_ColumnPropNameInRow="trip_start_date" msprop:Generator_ColumnPropNameInTable="trip_start_dateColumn" msprop:Generator_UserColumnName="trip_start_date" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="8" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="trip_start_time" msprop:Generator_ColumnVarNameInTable="columntrip_start_time" msprop:Generator_ColumnPropNameInRow="trip_start_time" msprop:Generator_ColumnPropNameInTable="trip_start_timeColumn" msprop:Generator_UserColumnName="trip_start_time" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="8" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="trip_schedule_relationship" msprop:Generator_ColumnVarNameInTable="columntrip_schedule_relationship" msprop:Generator_ColumnPropNameInRow="trip_schedule_relationship" msprop:Generator_ColumnPropNameInTable="trip_schedule_relationshipColumn" msprop:Generator_UserColumnName="trip_schedule_relationship" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="vehicle_id" msprop:Generator_ColumnVarNameInTable="columnvehicle_id" msprop:Generator_ColumnPropNameInRow="vehicle_id" msprop:Generator_ColumnPropNameInTable="vehicle_idColumn" msprop:Generator_UserColumnName="vehicle_id" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="vehicle_label" msprop:Generator_ColumnVarNameInTable="columnvehicle_label" msprop:Generator_ColumnPropNameInRow="vehicle_label" msprop:Generator_ColumnPropNameInTable="vehicle_labelColumn" msprop:Generator_UserColumnName="vehicle_label" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="vehicle_license_plate" msprop:Generator_ColumnVarNameInTable="columnvehicle_license_plate" msprop:Generator_ColumnPropNameInRow="vehicle_license_plate" msprop:Generator_ColumnPropNameInTable="vehicle_license_plateColumn" msprop:Generator_UserColumnName="vehicle_license_plate" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="vehicle_timestamp" msprop:Generator_ColumnVarNameInTable="columnvehicle_timestamp" msprop:Generator_ColumnPropNameInRow="vehicle_timestamp" msprop:Generator_ColumnPropNameInTable="vehicle_timestampColumn" msprop:Generator_UserColumnName="vehicle_timestamp" type="xs:int" minOccurs="0" />
+              <xs:element name="stop_id" msprop:Generator_ColumnVarNameInTable="columnstop_id" msprop:Generator_ColumnPropNameInRow="stop_id" msprop:Generator_ColumnPropNameInTable="stop_idColumn" msprop:Generator_UserColumnName="stop_id" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="stop_sequence" msprop:Generator_ColumnVarNameInTable="columnstop_sequence" msprop:Generator_ColumnPropNameInRow="stop_sequence" msprop:Generator_ColumnPropNameInTable="stop_sequenceColumn" msprop:Generator_UserColumnName="stop_sequence" type="xs:int" minOccurs="0" />
+              <xs:element name="predicted_arrival_time" msprop:Generator_ColumnVarNameInTable="columnpredicted_arrival_time" msprop:Generator_ColumnPropNameInRow="predicted_arrival_time" msprop:Generator_ColumnPropNameInTable="predicted_arrival_timeColumn" msprop:Generator_UserColumnName="predicted_arrival_time" type="xs:int" minOccurs="0" />
+              <xs:element name="predicted_arrival_delay" msprop:Generator_ColumnVarNameInTable="columnpredicted_arrival_delay" msprop:Generator_ColumnPropNameInRow="predicted_arrival_delay" msprop:Generator_ColumnPropNameInTable="predicted_arrival_delayColumn" msprop:Generator_UserColumnName="predicted_arrival_delay" type="xs:int" minOccurs="0" />
+              <xs:element name="predicted_arrival_uncertainty" msprop:Generator_ColumnVarNameInTable="columnpredicted_arrival_uncertainty" msprop:Generator_ColumnPropNameInRow="predicted_arrival_uncertainty" msprop:Generator_ColumnPropNameInTable="predicted_arrival_uncertaintyColumn" msprop:Generator_UserColumnName="predicted_arrival_uncertainty" type="xs:int" minOccurs="0" />
+              <xs:element name="predicted_departure_time" msprop:Generator_ColumnVarNameInTable="columnpredicted_departure_time" msprop:Generator_ColumnPropNameInRow="predicted_departure_time" msprop:Generator_ColumnPropNameInTable="predicted_departure_timeColumn" msprop:Generator_UserColumnName="predicted_departure_time" type="xs:int" minOccurs="0" />
+              <xs:element name="predicted_departure_delay" msprop:Generator_ColumnVarNameInTable="columnpredicted_departure_delay" msprop:Generator_ColumnPropNameInRow="predicted_departure_delay" msprop:Generator_ColumnPropNameInTable="predicted_departure_delayColumn" msprop:Generator_UserColumnName="predicted_departure_delay" type="xs:int" minOccurs="0" />
+              <xs:element name="predicted_departure_uncertainty" msprop:Generator_ColumnVarNameInTable="columnpredicted_departure_uncertainty" msprop:Generator_ColumnPropNameInRow="predicted_departure_uncertainty" msprop:Generator_ColumnPropNameInTable="predicted_departure_uncertaintyColumn" msprop:Generator_UserColumnName="predicted_departure_uncertainty" type="xs:int" minOccurs="0" />
+              <xs:element name="stop_schedule_relationship" msprop:Generator_ColumnVarNameInTable="columnstop_schedule_relationship" msprop:Generator_ColumnPropNameInRow="stop_schedule_relationship" msprop:Generator_ColumnPropNameInTable="stop_schedule_relationshipColumn" msprop:Generator_UserColumnName="stop_schedule_relationship" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

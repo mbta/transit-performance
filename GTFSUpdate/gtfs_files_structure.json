@@ -1,0 +1,421 @@
+{
+    "tables": {
+        "agency": {
+            "columns": {
+                "agency_id": {
+                    "primaryKey": true,
+                    "type": "VARCHAR(255)"
+                },
+                "agency_name": {
+                    "index": true,
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "agency_url": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "agency_timezone": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "agency_lang": {
+                    "create": false,
+                    "required": false,
+                    "type": "CHAR(2)"
+                },
+                "agency_phone": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "agency_fare_url": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                }
+            }
+        },
+        "calendar": {
+            "columns": {
+                "service_id": {
+                    "primaryKey": true,
+                    "type": "VARCHAR(255)"
+                },
+                "monday": {
+                    "null": false,
+                    "type": "BIT"
+                },
+                "tuesday": {
+                    "null": false,
+                    "type": "BIT"
+                },
+                "wednesday": {
+                    "null": false,
+                    "type": "BIT"
+                },
+                "thursday": {
+                    "null": false,
+                    "type": "BIT"
+                },
+                "friday": {
+                    "null": false,
+                    "type": "BIT"
+                },
+                "saturday": {
+                    "null": false,
+                    "type": "BIT"
+                },
+                "start_date": {
+                    "null": false,
+                    "type": "DATE"
+                },
+                "end_date": {
+                    "null": false,
+                    "type": "DATE"
+                }
+            }
+        },
+        "routes": {
+            "columns": {
+                "route_id": {
+                    "primaryKey": true,
+                    "type": "VARCHAR(255)"
+                },
+                "agency_id": {
+                    "index": true,
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "route_short_name": {
+                    "type": "VARCHAR(255)"
+                },
+                "route_long_name": {
+                    "type": "VARCHAR(255)"
+                },
+                "route_desc": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "route_type": {
+                    "index": true,
+                    "null": false,
+                    "type": "INT"
+                },
+                "route_url": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "route_color": {
+                    "create": false,
+                    "required": false,
+                    "type": "CHAR(6)"
+                },
+                "route_text_color": {
+                    "create": false,
+                    "required": false,
+                    "type": "CHAR(6)"
+                }
+            }
+        },
+        "stop_times": {
+            "columns": {
+                "stop_id": {
+                    "index": true,
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "trip_id": {
+                    "index": true,
+                    "primaryKey": true,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_sequence": {
+                    "index": true,
+                    "primaryKey": true,
+                    "type": "INT"
+                },
+                "arrival_time": {
+                    "null": false,
+                    "type": "VARCHAR(8)"
+                },
+                "departure_time": {
+                    "null": false,
+                    "type": "VARCHAR(8)"
+                },
+                "stop_headsign": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "pickup_type": {
+                    "create": false,
+                    "required": false,
+                    "type": "INT"
+                },
+                "drop_off_type": {
+                    "create": false,
+                    "required": false,
+                    "type": "INT"
+                },
+                "shape_dist_traveled": {
+                    "create": false,
+                    "required": false,
+                    "type": "FLOAT"
+                },
+				"arrival_time_sec": {
+                    "required": false,
+                    "type": "INT"
+                },
+                "departure_time_sec": {
+                    "required": false,
+                    "type": "INT"
+                },
+				"timepoint":{
+					"create": false,
+					"required": false,
+					"type": "BIT"
+				},
+				"checkpoint_id":{
+					"required": false,
+					"type": "VARCHAR(255)"
+				}
+            }
+        },
+        "stops": {
+            "columns": {
+                "stop_id": {
+                    "primaryKey": true,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_code": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_name": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_desc": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_lat": {
+                    "null": false,
+                    "type": "FLOAT"
+                },
+                "stop_lon": {
+                    "null": false,
+                    "type": "FLOAT"
+                },
+                "zone_id": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_url": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "location_type": {
+                    "index": true,
+                    "required": false,
+                    "type": "INT"
+                },
+                "parent_station": {
+                    "index": true,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_timezone": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "wheelchair_boarding": {
+                    "create": false,
+                    "required": false,
+                    "type": "INT"
+                }
+            }
+        },
+        "trips": {
+            "columns": {
+                "route_id": {
+                    "index": true,
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "service_id": {
+                    "index": true,
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "trip_id": {
+                    "primaryKey": true,
+                    "type": "VARCHAR(255)"
+                },
+                "trip_headsign": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "trip_short_name": {
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "direction_id": {
+                    "index": true,
+                    "null": false,
+                    "type": "BIT"
+                },
+                "block_id": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "shape_id": {
+                    "create": false,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "wheelchair_accessible": {
+                    "create": false,
+                    "required": false,
+                    "type": "INT"
+                }
+            }
+        },
+        "route_names_exceptions": {
+            "columns": {
+                "route_id": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "route_name": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "route_do": {
+                    "type": "INT"
+                },
+                "name_type": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                }
+            },
+            "required": false
+        },
+        "direction_names_exceptions": {
+            "columns": {
+                "route_name": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "direction_id": {
+                    "null": false,
+                    "type": "INT"
+                },
+                "direction_do": {
+                    "type": "INT"
+                },
+                "direction_name": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                }
+            },
+            "required": false
+        },
+        "stop_order_exceptions": {
+            "columns": {
+                "route_name": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "direction_name": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_id": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_name": {
+                    "null": false,
+                    "type": "VARCHAR(255)"
+                },
+                "stop_do": {
+                    "null": false,
+                    "type": "INT"
+                }
+            },
+            "required": false
+        },
+        "calendar_dates": {
+            "columns": {
+                "service_id": {
+                    "index": true,
+                    "primaryKey": true,
+                    "type": "VARCHAR(255)"
+                },
+                "date": {
+                    "index": true,
+                    "primaryKey": true,
+                    "type": "DATE"
+                },
+                "exception_type": {
+                    "index": true,
+                    "null": false,
+                    "type": "INT"
+                }
+            }
+        },
+        "feed_info": {
+            "columns": {
+                "feed_publisher_name": {
+                    "primaryKey": true,
+                    "type": "VARCHAR(255)"
+                },
+                "feed_publisher_url": {
+                    "index": true,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "feed_lang": {
+                    "index": true,
+                    "required": false,
+                    "type": "VARCHAR(255)"
+                },
+                "feed_start_date": {
+                    "index": true,
+                    "required": false,
+                    "type": "DATE"
+                },
+                "feed_end_date": {
+                    "index": true,
+                    "required": false,
+                    "type": "DATE"
+                }
+            },
+            "required": false
+        },
+		"checkpoints": {
+			"columns": {
+				"checkpoint_id":{
+					"primaryKey": true,
+					"type": "VARCHAR(255)"
+				},
+				"checkpoint_name":{
+					"required": false,
+					"type": "VARCHAR(255)"
+				}
+			},
+			"required": false
+		}
+    }
+}

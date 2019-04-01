@@ -1,0 +1,13 @@
+  <appSettings>
+    <add key ="DownloadAndCompareFeedInfo" value="false"/> <!--set to true to download feed_info.txt from FeedInfoFileUrl then only update GTFS if feed_info.txt has changed; otherwise set to false-->
+    <add key="FeedInfoFileUrl" value=""/> <!--URL for endpoint hosting feed_info.txt-->
+	<add key ="CompareExtractedFeedInfo" value="true"/> <!--set to true to compare feed_info.txt at GTFSPath to the previous feed_info.txt then only update GTFS if feed_info.txt has changed; otherwise set to false-->
+    <add key ="DownloadGTFS" value=""/> <!--set to true to download GTFS from GTFSDataSetUrl; set to false to use GTFS that exists at GTFSPath-->
+    <add key="GTFSDataSetUrl" value=""/> <!--URL for endpoint hosting GTFS zip file-->
+    <add key="GTFSFileStructure" value=""/> <!--full path to gtfs_files_structure.json-->
+    <add key ="GTFSZipPath" value=""/> <!--full path to where the downloaded GTFS zip file is saved-->
+    <add key ="GTFSPath" value=""/> <!--full path to where the GTFS zip file is extracted-->
+    <add key ="SecondarySchemaName" value="gtfs_next"/> <!--database schema name for the pending new GTFS data prior to migration to the primary schema-->
+    <add key ="PrimarySchemaName" value="gtfs"/> <!--database schema name for the active GTFS data-->
+    <add key ="DatabaseName" value="transit_performance"/>
+  </appSettings>

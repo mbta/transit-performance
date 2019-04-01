@@ -1,0 +1,97 @@
+{
+    "DatabaseConfiguration": {
+        "DataSource": "database_ip_address",
+        "Database": "database_name",
+        "User": "",
+        "Password": ""
+    },
+    "Tasks": [
+		{
+            "Name": "C:\\your_path\\GTFSUpdate\\GTFS.exe",
+            "Location": "C:\\your_path\\GTFSUpdate\\",
+            "TaskType": "Executable",
+			"Order": 1,
+			"Enable":"True"
+        },
+		{
+            "Name": "C:\\your_path\\ConfigUpdate\\ConfigUpdate.exe",
+            "Location": "C:\\your_path\\ConfigUpdate\\",
+            "TaskType": "Executable",
+			"Order": 2,
+			"Enable":"True"
+        },
+		{	
+            "Name": "dbo.PreProcessDaily",
+            "TaskType": "StoredProcedure",
+			"Order": 3,
+			"Enable":"True",
+			"Arguments": [
+                {
+                    "Name": "service_date ",
+                    "Value": "Yesterday",
+                    "Datatype": "date"
+                }
+            ]
+        },
+		{	
+            "Name": "dbo.PostProcessDaily",
+            "TaskType": "StoredProcedure",
+			"Order": 4,
+			"Enable":"True",
+			"Arguments": [
+                {
+                    "Name": "service_date ",
+                    "Value": "Yesterday",
+                    "Datatype": "date"
+                }
+            ]
+        },
+		{	
+            "Name": "dbo.ProcessPredictionAccuracyDaily",
+            "TaskType": "StoredProcedure",
+			"Order": 5,
+			"Enable":"True",
+			"Arguments": [
+                {
+                    "Name": "service_date ",
+                    "Value": "Yesterday",
+                    "Datatype": "date"
+                }
+            ]
+        },
+		{	
+            "Name": "dbo.PreProcessToday",
+            "TaskType": "StoredProcedure",
+			"Order": 6,
+			"Enable":"True",
+			"Arguments": [
+                {
+                    "Name": "service_date ",
+                    "Value": "Today",
+                    "Datatype": "date"
+                }
+            ]
+        },
+		{	
+            "Name": "dbo.CreateTodayRTProcess",
+            "TaskType": "StoredProcedure",
+			"Order": 7,
+			"Enable":"True",
+			"Arguments": []
+        },
+		{	
+            "Name": "dbo.ClearData",
+            "TaskType": "StoredProcedure",
+			"Order": 8,
+			"Enable":"True",
+			"Arguments": [
+                {
+                    "Name": "number_of_days",
+                    "Value": number_of_days,
+                    "Datatype": "integer"
+                }
+            ]
+        }
+		
+    ]
+}
