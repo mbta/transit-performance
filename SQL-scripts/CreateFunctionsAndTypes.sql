@@ -3,6 +3,7 @@
 --USE transit_performance
 --GO
 
+--function to convert datetime into epoch
 IF OBJECT_ID('fnConvertDateTimeToEpoch') IS NOT NULL
 	DROP FUNCTION dbo.fnConvertDateTimeToEpoch
 GO
