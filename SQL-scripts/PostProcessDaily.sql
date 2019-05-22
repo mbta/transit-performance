@@ -138,33 +138,6 @@ BEGIN
 				dbo.rt_event.event_time_sec IS NULL
 			AND 
 				dbo.rt_event.service_date = @service_date_process
-	
-	--ensure events from vehicle positions for platform-specific child stops with station child stops
-	UPDATE dbo.rt_event
-		SET stop_id = ps.stop_id
-			--CASE
-			--	WHEN e.stop_id NOT IN (SELECT stop_id FROM gtfs.route_direction_stop) THEN ps.stop_id
-			--	ELSE e.stop_id
-			--END
-		FROM dbo.rt_event e
-		LEFT JOIN
-		(
-			SELECT rds.route_type, rds.route_id, rds.direction_id, rds.stop_order, rds.stop_id, s.parent_station
-			FROM gtfs.route_direction_stop rds
-			JOIN gtfs.stops s
-			ON
-				rds.stop_id = s.stop_id
-		) ps
-		ON
-				e.route_id = ps.route_id
-			AND
-				e.direction_id = ps.direction_id
-			AND
-				(SELECT parent_station FROM gtfs.stops s WHERE e.stop_id = s.stop_id) = ps.parent_station
-		WHERE		
-				e.service_date = @service_date_process
-			AND
-				e.stop_id NOT IN (SELECT stop_id FROM gtfs.route_direction_stop)
 
 	--ensure events from trip_updates have direction_id---------------------
 	UPDATE dbo.event_rt_trip_archive
@@ -195,33 +168,6 @@ BEGIN
 				dbo.event_rt_trip_archive.direction_id IS NULL
 			AND 
 				dbo.event_rt_trip_archive.service_date = @service_date_process
-
-	--ensure events from trip updates for platform-specific child stops with station child stops
-	UPDATE dbo.event_rt_trip_archive
-		SET stop_id = ps.stop_id
-			--CASE
-			--	WHEN e.stop_id NOT IN (SELECT stop_id FROM gtfs.route_direction_stop) THEN ps.stop_id
-			--	ELSE e.stop_id
-			--END
-		FROM dbo.event_rt_trip_archive e
-		LEFT JOIN
-		(
-			SELECT rds.route_type, rds.route_id, rds.direction_id, rds.stop_order, rds.stop_id, s.parent_station
-			FROM gtfs.route_direction_stop rds
-			JOIN gtfs.stops s
-			ON
-				rds.stop_id = s.stop_id
-		) ps
-		ON
-				e.route_id = ps.route_id
-			AND
-				e.direction_id = ps.direction_id
-			AND
-				(SELECT parent_station FROM gtfs.stops s WHERE e.stop_id = s.stop_id) = ps.parent_station
-		WHERE		
-				e.service_date = @service_date_process
-			AND
-				e.stop_id NOT IN (SELECT stop_id FROM gtfs.route_direction_stop)
 
 	--Create Trip Updates Table which stores predicted arrival and departure events and times for the day being processed
 
@@ -309,7 +255,7 @@ BEGIN
 		AND
 			dtu.stop_id = cs.incorrect_stop_id
 
-	--ensure events from trip updates for platform-specific child stops with station child stops
+	--update events from trip updates for platform-specific child stops with station child stops
 	UPDATE dbo.daily_trip_updates
 		SET stop_id = ps.stop_id
 		FROM dbo.daily_trip_updates e
@@ -520,7 +466,7 @@ BEGIN
 		AND
 			de.stop_id = cs.incorrect_stop_id
 
-	--ensure events from vehicle positions for platform-specific child stops with station child stops
+	--update events from vehicle positions for platform-specific child stops with station child stops
 	UPDATE dbo.daily_event
 		SET stop_id = ps.stop_id
 		FROM dbo.daily_event e
@@ -3887,16 +3833,13 @@ BEGIN
 		JOIN dbo.service_date s
 		ON
 			s.service_date = cap.service_date
-		JOIN dbo.config_day_type cdt
-		ON
-			s.day_type_id = cdt.day_type_id
 		JOIN dbo.config_time_period ctp
 		ON
 				cap.departure_time_sec >= ctp.time_period_start_time_sec
 			AND
 				cap.departure_time_sec < ctp.time_period_end_time_sec
 			AND
-				ctp.day_type = cdt.day_type	
+				ctp.day_type_id = s.day_type_id	
 	WHERE
 			sad.route_type = 3 --bus only
 		AND 
@@ -4278,16 +4221,13 @@ BEGIN
 		JOIN dbo.service_date s
 		ON
 			s.service_date = cap.service_date
-		JOIN dbo.config_day_type cdt
-		ON
-			s.day_type_id = cdt.day_type_id
 		JOIN dbo.config_time_period ctp
 		ON
 				cap.departure_time_sec >= ctp.time_period_start_time_sec
 			AND
 				cap.departure_time_sec < ctp.time_period_end_time_sec
 			AND
-				ctp.day_type = cdt.day_type						   
+				ctp.day_type_id = s.day_type_id						   
 	WHERE
 			(acbd.bd_route_type = 3 OR acbd.ac_route_type = 3 )--bus only
 		AND 
@@ -4473,16 +4413,13 @@ BEGIN
 		JOIN dbo.service_date s
 		ON
 			s.service_date = st.service_date
-		JOIN dbo.config_day_type cdt
-		ON
-			s.day_type_id = cdt.day_type_id
 		JOIN dbo.config_time_period ctp
 		ON
 				st.arrival_time_sec >= ctp.time_period_start_time_sec
 			AND
 				st.arrival_time_sec < ctp.time_period_end_time_sec
 			AND
-				ctp.day_type = cdt.day_type				   
+				ctp.day_type_id = s.day_type_id				   
 	WHERE
 			de.de_route_type = 3 --bus only
 		AND 
