@@ -13,12 +13,12 @@ using System.Text.RegularExpressions;
 
 namespace ConfigUpdate
 {
-    class Program
+    internal class Program
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly string sqlConnectionString = ConfigurationManager.ConnectionStrings["DatabaseConnectionString"].ConnectionString;
 
-        static int Main()
+        private static int Main()
         {
             try
             {

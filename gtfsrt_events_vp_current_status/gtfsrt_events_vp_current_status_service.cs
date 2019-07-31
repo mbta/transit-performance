@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Threading;
@@ -22,12 +23,16 @@ namespace gtfsrt_events_vp_current_status
             StartGTFSRealtimeService();
         }
 
-        internal void StartGTFSRealtimeService()
+        internal static void StartGTFSRealtimeService()
         {
             try
             {
                 XmlConfigurator.Configure();
                 Log.Info("Start");
+
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                Log.Info($"Enabled Protocols: {ServicePointManager.SecurityProtocol}");
+
                 var eventQueue = new EventQueue(Log);
                 var databaseThread = new DatabaseThread(Log, eventQueue);
                 var dataThread = new Thread(databaseThread.ThreadRun);

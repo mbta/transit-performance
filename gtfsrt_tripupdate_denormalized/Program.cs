@@ -8,13 +8,14 @@ using Topshelf;
 
 namespace gtfsrt_tripupdate_denormalized
 {
-    class Program
+    internal class Program
     {
         internal static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static void Main()
+
+        private static void Main()
         {
             XmlConfigurator.Configure();
-            Log.Info($"***** START {Assembly.GetEntryAssembly().GetName().Version} *****");
+            Log.Info($"***** START {Assembly.GetEntryAssembly()?.GetName().Version} *****");
 
             HostFactory.Run(serviceConfig =>
             {

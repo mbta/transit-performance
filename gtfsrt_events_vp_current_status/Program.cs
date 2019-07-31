@@ -17,7 +17,7 @@ namespace gtfsrt_events_vp_current_status
             ServiceBase.Run(ServicesToRun);
 #else
             var service = new gtfsrt_events_vp_current_status_service();
-            service.StartGTFSRealtimeService();
+            gtfsrt_events_vp_current_status_service.StartGTFSRealtimeService();
 #endif
         }
     }

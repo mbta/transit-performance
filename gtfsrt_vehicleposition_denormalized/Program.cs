@@ -6,25 +6,25 @@ using log4net.Config;
 
 using Topshelf;
 
-namespace gtfsrt_alerts
+namespace gtfsrt_vehicleposition_denormalized
 {
-    internal static class Program
+    internal class Program
     {
-        internal static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        internal static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static void Main()
         {
             XmlConfigurator.Configure();
-            var instanceName = ConfigurationManager.AppSettings["SERVICENAME"] ?? "gtfsrt_alerts";
             Log.Info($"***** START - Version {Assembly.GetExecutingAssembly().GetName().Version} *****");
+            var instanceName = ConfigurationManager.AppSettings["SERVICENAME"] ?? "gtfsrt_vehicleposition_denormalized";
             Log.Info(instanceName);
 
             HostFactory.Run(serviceConfig =>
             {
                 serviceConfig.UseLog4Net();
-                serviceConfig.Service<AlertService>(serviceInstance =>
+                serviceConfig.Service<VehiclePositionService>(serviceInstance =>
                 {
-                    serviceInstance.ConstructUsing(() => new AlertService());
+                    serviceInstance.ConstructUsing(() => new VehiclePositionService());
                     serviceInstance.WhenStarted(execute => execute.Start());
                     serviceInstance.WhenStopped(execute => execute.Stop());
                 });
@@ -38,7 +38,7 @@ namespace gtfsrt_alerts
 
                 serviceConfig.SetServiceName(instanceName);
                 serviceConfig.SetDisplayName(instanceName);
-                serviceConfig.SetDescription(ConfigurationManager.AppSettings["SERVICEDESCRIPTION"] ?? "gtfsrt_alerts");
+                serviceConfig.SetDescription(ConfigurationManager.AppSettings["SERVICEDESCRIPTION"] ?? "gtfsrt_vehicleposition_denormalized");
                 //serviceConfig.RunAsPrompt();
 
                 serviceConfig.StartAutomatically();
