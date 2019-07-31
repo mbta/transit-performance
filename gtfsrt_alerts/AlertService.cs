@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 
@@ -26,6 +27,9 @@ namespace gtfsrt_alerts
             {
                 XmlConfigurator.Configure();
                 Log.Info("Program started");
+
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                Log.Info($"Enabled Protocols: {ServicePointManager.SecurityProtocol}");
 
                 Thread.Sleep(1000);
 
