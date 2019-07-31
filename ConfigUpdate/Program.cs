@@ -18,6 +18,8 @@ namespace ConfigUpdate
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly string sqlConnectionString = ConfigurationManager.ConnectionStrings["DatabaseConnectionString"].ConnectionString;
 
+
+
         static int Main()
         {
             try

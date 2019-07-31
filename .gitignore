@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/AppLauncher
+/ConfigUpdate/obj/Debug
+/DataAccess/obj/Debug
+/GtfsRealtimeLib/obj/Debug
+/gtfsrt_alerts/obj/Debug
+/gtfsrt_events_tu_latest_prediction/obj/Debug
+/gtfsrt_events_vp_current_status/obj/Debug
+/gtfsrt_tripupdate_denormalized/obj/Debug
+/GTFSUpdate/obj/Debug
