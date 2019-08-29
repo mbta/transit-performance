@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This procedure calculates daily prediction accuracy metrics.
-
 IF OBJECT_ID('dbo.ProcessPredictionAccuracyDaily','P') IS NOT NULL
 	DROP PROCEDURE dbo.ProcessPredictionAccuracyDaily
 GO
@@ -19,6 +17,11 @@ GO
 
 
 CREATE PROCEDURE dbo.ProcessPredictionAccuracyDaily
+
+--Script Version: Master - 1.1.0.0
+
+--This procedure calculates daily prediction accuracy metrics.
+
 	@service_date	DATE
 
 AS

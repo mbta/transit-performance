@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This stored procedure is called by the predictionmetrics API call.  It selects prediction metrics for a particular route(s), direction(s), and stop(s) and time period.
-
 IF OBJECT_ID('getPredictionMetrics') IS NOT NULL
 	DROP PROCEDURE dbo.getPredictionMetrics
 GO
@@ -17,6 +15,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE dbo.getPredictionMetrics
+
+--Script Version: Master - 1.1.0.0
+
+--This stored procedure is called by the predictionmetrics API call.  It selects prediction metrics for a particular route(s), direction(s), and stop(s) and time period.
 
 	@route_id		VARCHAR(255)
 	,@direction_id	INT

@@ -1,8 +1,7 @@
+
 ---run this script in the transit-performance database
 --USE transit_performance
 --GO
-
---This procedure sets up the daily tables. These tables store the performance information for the day being processed after the day has happened.
 
 IF OBJECT_ID('PreProcessDaily','P') IS NOT NULL
 	DROP PROCEDURE dbo.PreProcessDaily
@@ -15,7 +14,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE dbo.PreProcessDaily 
+CREATE PROCEDURE dbo.PreProcessDaily
+
+--Script Version: Master - 1.1.0.0 
+
+--This procedure sets up the daily tables. These tables store the performance information for the day being processed after the day has happened.
 
 	@service_date DATE
 

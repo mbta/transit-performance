@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This stored procedure is called by the Alerts API call.  It selects alerts for a particular route, direction, stop and time period.
-
 IF OBJECT_ID('dbo.getPastAlertsVersions','P') IS NOT NULL
 	DROP PROCEDURE dbo.getPastAlertsVersions
 GO
@@ -17,6 +15,10 @@ GO
 
 
 CREATE PROCEDURE dbo.getPastAlertsVersions
+
+--Script Version: Master - 1.1.0.0
+
+--This stored procedure is called by the Alerts API call.  It selects alerts for a particular route, direction, stop and time period.
 	
 	@alert_id				VARCHAR(255)
 	,@from_time				DATETIME 

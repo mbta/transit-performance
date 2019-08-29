@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This stored procedure is called by the getEvents API call.  It selects events for a particular route, direction, stop and time period.
-
 IF OBJECT_ID('dbo.getEvents','P') IS NOT NULL
 	DROP PROCEDURE dbo.getEvents
 GO
@@ -17,6 +15,10 @@ GO
 
 
 CREATE PROCEDURE dbo.getEvents
+
+--Script Version: Master - 1.1.0.0
+
+--This stored procedure is called by the getEvents API call.  It selects events for a particular route, direction, stop and time period.
 	
 	@route_id		VARCHAR(255)
 	,@direction_id	INT

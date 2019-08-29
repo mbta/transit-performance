@@ -3,9 +3,6 @@
 --USE transit_performance
 --GO
 
---This procedure sets up the today tables. These tables store the performance information for the day being processed events after the day has happened.
---This procedure is run at the end of the service_date and processes all information for that date after it has ended. 
-
 IF OBJECT_ID('PreProcessToday','P') IS NOT NULL
 	DROP PROCEDURE dbo.PreProcessToday
 
@@ -20,6 +17,11 @@ GO
 
 
 CREATE PROCEDURE dbo.PreProcessToday 
+
+--Script Version: Master - 1.1.0.0
+
+--This procedure sets up the today tables. These tables store the performance information for the day being processed events after the day has happened.
+--This procedure is run at the end of the service_date and processes all information for that date after it has ended. 
 
 	@service_date DATE
 

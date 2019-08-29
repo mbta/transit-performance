@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This stored procedure is called by the dailymetrics API call.  It selects daily metrics for a particular route (or all routes) and time period.
-
 IF OBJECT_ID('getCurrentMetrics','P') IS NOT NULL
 	DROP PROCEDURE dbo.getCurrentMetrics
 
@@ -20,6 +18,10 @@ GO
 
 
 CREATE PROCEDURE dbo.getCurrentMetrics
+
+--Script Version: Master - 1.1.0.0
+
+--This stored procedure is called by the dailymetrics API call.  It selects daily metrics for a particular route (or all routes) and time period.
 
 	@route_ids str_val_type READONLY
 

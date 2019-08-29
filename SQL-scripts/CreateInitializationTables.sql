@@ -1,3 +1,5 @@
+--Script Version: Master - 1.1.0.0
+
 --Only run this at the very start of setting up the system 
 
 ---run this script in the transit-performance database

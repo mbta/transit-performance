@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This Procedure is called by the dwelltimes API call. It selects dwell times for a particular stop (and optionally route + direction) and time period.
-
 IF OBJECT_ID('getDwellTimes','P') IS NOT NULL
 	DROP PROCEDURE dbo.getDwellTimes
 GO
@@ -17,6 +15,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE dbo.getDwellTimes
+
+--Script Version: Master - 1.1.0.0
+
+--This Procedure is called by the dwelltimes API call. It selects dwell times for a particular stop (and optionally route + direction) and time period.
+
 	@stop_id VARCHAR(255)
 	,@route_id VARCHAR(255)
 	,@direction_id VARCHAR(255)
