@@ -17,7 +17,7 @@ GO
 
 CREATE PROCEDURE dbo.PostProcessDaily 
 
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.1.1.0
 
 --This procedure processes all of the events for the service_date being processed. It runs after the PreProcessDaily.
 
@@ -546,6 +546,148 @@ BEGIN
 						ed.trip_id = s.trip_id
 
 	--Records where there are duplicate events for trip-stop that are not already suspect
+	--BUT do not mark the first arrival time as suspect for Heavy Rail
+	UPDATE dbo.daily_event
+		SET suspect_record = 1
+		FROM dbo.daily_event ed
+			JOIN
+			(
+				SELECT
+					e.service_date
+					,e.trip_id
+					,e.stop_sequence
+					,e.stop_id
+					,e.event_type
+					,MIN(e.event_time) as min_event_time
+				FROM dbo.daily_event e
+				JOIN
+					(
+						SELECT
+							service_date
+							,trip_id
+							,stop_sequence
+							,stop_id
+							,event_type
+							,COUNT(*) AS num_duplicates
+						FROM dbo.daily_event
+						WHERE
+								suspect_record = 0
+							AND
+								event_type = 'ARR'
+							AND
+								route_type = 1
+						GROUP BY
+							service_date
+							,trip_id
+							,stop_sequence
+							,stop_id
+							,event_type
+						HAVING COUNT(*) > 1
+					) t
+						ON
+								e.service_date = t.service_date
+							AND 
+								e.trip_id = t.trip_id
+							AND 
+								e.stop_sequence = t.stop_sequence
+							AND	
+								e.stop_id = t.stop_id
+							AND 
+								e.event_type = t.event_type
+						GROUP BY
+							e.service_date
+							,e.trip_id
+							,e.stop_sequence
+							,e.stop_id
+							,e.event_type
+			) s
+				ON
+						ed.service_date = s.service_date
+					AND
+						ed.trip_id = s.trip_id
+					AND
+						ed.stop_sequence = s.stop_sequence
+					AND
+						ed.stop_id = s.stop_id
+					AND
+						ed.event_type = s.event_type
+			WHERE
+				ed.event_time <> min_event_time	
+				
+	--Records where there are duplicate events for trip-stop that are not already suspect
+	--BUT do not mark the last departure time as suspect for Heavy Rail
+	UPDATE dbo.daily_event
+		SET suspect_record = 1
+		FROM dbo.daily_event ed
+			JOIN
+			(
+				SELECT
+					e.service_date
+					,e.trip_id
+					,e.stop_sequence
+					,e.stop_id
+					,e.event_type
+					,MAX(e.event_time) as max_event_time
+				FROM dbo.daily_event e
+				JOIN
+					(
+						SELECT
+							service_date
+							,trip_id
+							,stop_sequence
+							,stop_id
+							,event_type
+							,vehicle_id
+							,COUNT(*) AS num_duplicates
+						FROM dbo.daily_event
+						WHERE
+								suspect_record = 0
+							AND
+								event_type = 'DEP'
+							AND
+								route_type = 1
+						GROUP BY
+							service_date
+							,trip_id
+							,stop_sequence
+							,stop_id
+							,event_type
+							,vehicle_id
+						HAVING COUNT(*) > 1
+					) t
+						ON
+								e.service_date = t.service_date
+							AND 
+								e.trip_id = t.trip_id
+							AND 
+								e.stop_sequence = t.stop_sequence
+							AND	
+								e.stop_id = t.stop_id
+							AND 
+								e.event_type = t.event_type
+						GROUP BY
+							e.service_date
+							,e.trip_id
+							,e.stop_sequence
+							,e.stop_id
+							,e.event_type
+			) s
+				ON
+						ed.service_date = s.service_date
+					AND
+						ed.trip_id = s.trip_id
+					AND
+						ed.stop_sequence = s.stop_sequence
+					AND
+						ed.stop_id = s.stop_id
+					AND
+						ed.event_type = s.event_type
+			WHERE
+				ed.event_time <> s.max_event_time	
+	
+	
+	--Records where there are duplicate events for trip-stop that are not already suspect
+	--For all other modes
 	UPDATE dbo.daily_event
 		SET suspect_record = 1
 		FROM dbo.daily_event ed
@@ -560,7 +702,9 @@ BEGIN
 					,COUNT(*) AS num_duplicates
 				FROM dbo.daily_event
 				WHERE
-					suspect_record = 0
+						suspect_record = 0
+					AND
+						route_type <> 1
 				GROUP BY
 					service_date
 					,trip_id
@@ -570,15 +714,17 @@ BEGIN
 				HAVING COUNT(*) > 1
 			) t
 				ON
+					(
 						ed.service_date = t.service_date
 					AND 
 						ed.trip_id = t.trip_id
 					AND 
 						ed.stop_sequence = t.stop_sequence
-					AND	
+					AND 
 						ed.stop_id = t.stop_id
 					AND 
 						ed.event_type = t.event_type
+					)	
 
 	-------finding missed events at the destination and adding last available prediction from trip_udpates----------
 	IF OBJECT_ID('tempdb..##missed_events','U') IS NOT NULL
@@ -597,6 +743,7 @@ BEGIN
 	)
 
 	--Heavy Rail and Commuter Rail: finding missed heavy rail and CR events at the destination
+	--Scheduled Trips
 	INSERT INTO ##missed_events
 	(
 		service_date
@@ -631,6 +778,60 @@ BEGIN
 				st.stop_order_flag = 3
 			AND
 				de.event_type = 'ARR' --only arrival events at terminals
+
+	--Added trips
+	INSERT INTO ##missed_events
+    (
+        service_date
+		,trip_id
+		,vehicle_id
+        ,route_type
+        ,stop_id
+        ,stop_sequence
+		,stop_order_flag
+		,event_type
+    )
+
+		SELECT DISTINCT
+			dtu.service_date
+			,dtu.trip_id
+			,dtu.vehicle_id
+			,dtu.route_type
+			,dtu.stop_id
+			,dtu.stop_sequence
+			,NULL--st.stop_order_flag
+			,dtu.event_type
+		FROM
+			dbo.daily_trip_updates dtu
+		JOIN
+		 (
+			SELECT 
+				service_date
+				,route_type
+				,trip_id
+				,vehicle_id
+				,MAX(stop_sequence) as max_stop_sequence
+			FROM daily_event
+			WHERE
+					route_type = 1
+				AND
+					suspect_record = 0
+			GROUP BY 
+				service_date
+				,route_type
+				,trip_id
+				,vehicle_id	
+		 ) de_temp
+		ON
+				dtu.service_date = de_temp.service_date
+			AND
+				dtu.trip_id = de_temp.trip_id
+			AND
+				dtu.vehicle_id = de_temp.vehicle_id
+			AND 
+				dtu.stop_sequence > de_temp.max_stop_sequence
+		WHERE
+			dtu.trip_id NOT IN (SELECT DISTINCT trip_id FROM daily_trips)
 
 	--Bus: finding missed bus events at all stops
 	INSERT INTO ##missed_events
@@ -1321,7 +1522,7 @@ BEGIN
 					--AND 
 					--	ed.vehicle_id = s.vehicle_id
 					AND 
-						ed.trip_id = s.trip_id					
+						ed.trip_id = s.trip_id			
 
 	--Records where there are duplicate events for trip-stop that are not already suspect
 	UPDATE dbo.daily_event
