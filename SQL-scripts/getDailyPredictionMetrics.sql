@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This stored procedure is called by the dailypredictionmetrics API call.  It selects daily prediction metrics for a particular route (or all routes) and time period.
-
 IF OBJECT_ID('getDailyPredictionMetrics') IS NOT NULL
 	DROP PROCEDURE dbo.getDailyPredictionMetrics
 GO
@@ -17,6 +15,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE dbo.getDailyPredictionMetrics
+
+--Script Version: Master - 1.1.0.0
+
+--This stored procedure is called by the dailypredictionmetrics API call.  It selects daily prediction metrics for a particular route (or all routes) and time period.
 
 	@route_ids str_val_type READONLY
 	,@from_date VARCHAR(255)

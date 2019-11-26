@@ -150,7 +150,7 @@
 					"primaryKey": true,
 					"type": "VARCHAR(255)"
 				},
-				"day_type": {
+				"day_type_id": {
 					"null": false,
 					"type": "VARCHAR(255)"
 				},

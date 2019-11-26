@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("gtfsrt_tripupdate_denormalized")]
+[assembly: AssemblyTitle("gtfsrt_vehicleposition_denormalized")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("gtfsrt_tripupdate_denormalized")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyProduct("gtfsrt_vehicleposition_denormalized")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("9b0e2d15-4d2a-4745-85db-08a415ed4ae3")]
+[assembly: Guid("7b75713b-bb1c-41e7-90e0-2f4a6e90ccb0")]
 
 // Version information for an assembly consists of the following four values:
 //

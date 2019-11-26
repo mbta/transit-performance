@@ -1,8 +1,7 @@
+
 ---run this script in the transit-performance database
 --USE transit_performance
 --GO
-
---This procedure sets up the daily tables. These tables store the performance information for the day being processed after the day has happened.
 
 IF OBJECT_ID('PreProcessDaily','P') IS NOT NULL
 	DROP PROCEDURE dbo.PreProcessDaily
@@ -15,7 +14,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE dbo.PreProcessDaily 
+CREATE PROCEDURE dbo.PreProcessDaily
+
+--Script Version: Master - 1.1.0.0 
+
+--This procedure sets up the daily tables. These tables store the performance information for the day being processed after the day has happened.
 
 	@service_date DATE
 
@@ -1145,8 +1148,7 @@ BEGIN
 				,dbo.config_threshold_calculation thc
 				,dbo.config_mode_threshold mt
 				,dbo.config_time_slice ts
-				,dbo.config_time_period tp
-				,dbo.config_day_type dt					   
+				,dbo.config_time_period tp				   
 		WHERE
 			th.threshold_id = thc.threshold_id
 			AND mt.threshold_id = th.threshold_id
@@ -1156,8 +1158,7 @@ BEGIN
 			AND att.time_slice_id = ts.time_slice_id
 			AND ts.time_slice_start_sec >= tp.time_period_start_time_sec
 			AND ts.time_slice_end_sec <= tp.time_period_end_time_sec
-			AND tp.day_type = dt.day_type
-			AND dt.day_type_id = @day_type_id													   							
+			AND tp.day_type_id = @day_type_id													   							
 		GROUP BY
 			att.service_date
 			,att.route_type
@@ -1400,8 +1401,7 @@ BEGIN
 				,dbo.config_threshold_calculation thc
 				,dbo.config_mode_threshold mt
 				,dbo.config_time_slice ts
-				,dbo.config_time_period tp
-				,dbo.config_day_type dt							 						   
+				,dbo.config_time_period tp						 						   
 
 		WHERE
 			th.threshold_id = thc.threshold_id
@@ -1412,8 +1412,7 @@ BEGIN
 			AND aht.time_slice_id = ts.time_slice_id
 			AND ts.time_slice_start_sec >= tp.time_period_start_time_sec
 			AND ts.time_slice_end_sec <= tp.time_period_end_time_sec
-			AND tp.day_type = dt.day_type
-			AND dt.day_type_id = @day_type_id										   
+			AND tp.day_type_id = @day_type_id										   
 
 		GROUP BY
 			aht.service_date
@@ -1704,21 +1703,18 @@ BEGIN
 				,dbo.config_threshold_calculation thc2
 				,dbo.config_mode_threshold mt
 				,dbo.config_time_slice ts
-				,dbo.config_time_period tp
-				,dbo.config_day_type dt							 
+				,dbo.config_time_period tp					 
 
 		WHERE
 			ISNULL(th.threshold_id_lower, th.threshold_id) = thc1.threshold_id
 			AND ISNULL(th.threshold_id_upper, th.threshold_id) = thc2.threshold_id
 			AND mt.threshold_id = th.threshold_id
-			--AND mt.threshold_id = thc.threshold_id
 			AND th.threshold_type = 'trip_headway_based'
 			AND aht.route_type = mt.route_type
 			AND aht.time_slice_id = ts.time_slice_id
 			AND ts.time_slice_start_sec >= tp.time_period_start_time_sec
 			AND ts.time_slice_end_sec <= tp.time_period_end_time_sec
-			AND tp.day_type = dt.day_type
-			AND dt.day_type_id = @day_type_id										   
+			AND tp.day_type_id = @day_type_id										   
 
 		GROUP BY
 			aht.service_date

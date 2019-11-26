@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Threading;
@@ -28,6 +29,9 @@ namespace gtfsrt_events_tu_latest_prediction
             {
                 XmlConfigurator.Configure();
                 Log.Info("Program started");
+
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                Log.Info($"Enabled Protocols: {ServicePointManager.SecurityProtocol}");
 
                 var InsertEventQueue = new BlockingQueue<Event>();
                 var UpdateEventQueue = new BlockingQueue<Event>();

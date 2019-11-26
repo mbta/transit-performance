@@ -21,6 +21,8 @@ GO
 
 CREATE PROCEDURE dbo.UpdateGTFSNext
 
+--Script Version: Master - 1.1.0.0
+
 AS
 
 BEGIN

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gtfsrt_tripupdate_denormalized", "gtfsrt_tripupdate_denormalized\gtfsrt_tripupdate_denormalized.csproj", "{9B0E2D15-4D2A-4745-85DB-08A415ED4AE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gtfsrt_vehicleposition_denormalized", "gtfsrt_vehicleposition_denormalized\gtfsrt_vehicleposition_denormalized.csproj", "{99624D69-DB63-4E3C-945D-E9D73F24614A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{9B0E2D15-4D2A-4745-85DB-08A415ED4AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B0E2D15-4D2A-4745-85DB-08A415ED4AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B0E2D15-4D2A-4745-85DB-08A415ED4AE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99624D69-DB63-4E3C-945D-E9D73F24614A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99624D69-DB63-4E3C-945D-E9D73F24614A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99624D69-DB63-4E3C-945D-E9D73F24614A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99624D69-DB63-4E3C-945D-E9D73F24614A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

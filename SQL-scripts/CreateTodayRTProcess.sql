@@ -3,9 +3,6 @@
 --USE transit_performance
 --GO
 
---This procedure sets up the today_rt tables. These tables store the real-time information for today's events. 
---They are updated in real-time by the ProcessRTEvent stored procedure that runs every minute via the ProcessRTEvent Job.
-
 IF OBJECT_ID('CreateTodayRTProcess','P') IS NOT NULL
 	DROP PROCEDURE dbo.CreateTodayRTProcess
 GO
@@ -19,6 +16,10 @@ GO
 
 CREATE PROCEDURE dbo.CreateTodayRTProcess
 
+--Script Version: Master - 1.1.0.0
+
+--This procedure sets up the today_rt tables. These tables store the real-time information for today's events. 
+--They are updated in real-time by the ProcessRTEvent stored procedure that runs every minute via the ProcessRTEvent Job.
 
 AS
 

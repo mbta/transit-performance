@@ -1,6 +1,7 @@
 ﻿using log4net;
 using log4net.Config;
 using System;
+using System.Net;
 using System.Reflection;
 
 namespace GTFS
@@ -17,6 +18,9 @@ namespace GTFS
 
                 Log.Info("\n\nGTFS schedule update program start.");
 
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                Log.Info($"Enabled Protocols: {ServicePointManager.SecurityProtocol}");
+
                 var gtfsUpdate = new GTFSUpdate();
 
                 Log.Info("Initializing GTFS update");
@@ -24,7 +28,7 @@ namespace GTFS
 
                 if (initialisationSuccessful)
                 {
-                    Log.Info("Initialisation of GTFS update successful.");
+                    Log.Info("Initialization of GTFS update successful.");
                     Log.Info("Running GTFS update");
                     var runningSuccessful = gtfsUpdate.RunGTFSUpdate();
 

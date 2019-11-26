@@ -66,6 +66,10 @@
                     "null": false,
                     "type": "BIT"
                 },
+                "sunday": {
+                    "null": false,
+                    "type": "BIT"
+                },
                 "start_date": {
                     "null": false,
                     "type": "DATE"
@@ -165,7 +169,7 @@
                     "required": false,
                     "type": "FLOAT"
                 },
-				"arrival_time_sec": {
+		"arrival_time_sec": {
                     "required": false,
                     "type": "INT"
                 },
@@ -173,15 +177,15 @@
                     "required": false,
                     "type": "INT"
                 },
-				"timepoint":{
-					"create": false,
-					"required": false,
-					"type": "BIT"
-				},
-				"checkpoint_id":{
-					"required": false,
-					"type": "VARCHAR(255)"
-				}
+		"timepoint": {
+		    "create": false,
+		    "required": false,
+		    "type": "BIT"
+		},
+		"checkpoint_id": {
+		    "required": false,
+		    "type": "VARCHAR(255)"
+		}
             }
         },
         "stops": {
@@ -205,11 +209,9 @@
                     "type": "VARCHAR(255)"
                 },
                 "stop_lat": {
-                    "null": false,
                     "type": "FLOAT"
                 },
                 "stop_lon": {
-                    "null": false,
                     "type": "FLOAT"
                 },
                 "zone_id": {
@@ -404,18 +406,18 @@
             },
             "required": false
         },
-		"checkpoints": {
-			"columns": {
-				"checkpoint_id":{
-					"primaryKey": true,
-					"type": "VARCHAR(255)"
-				},
-				"checkpoint_name":{
-					"required": false,
-					"type": "VARCHAR(255)"
-				}
-			},
-			"required": false
+	"checkpoints": {
+	    "columns": {
+		"checkpoint_id": {
+		    "primaryKey": true,
+		    "type": "VARCHAR(255)"
+		},
+		"checkpoint_name": {
+		    "required": false,
+		    "type": "VARCHAR(255)"
 		}
+	    },
+	    "required": false
+	}
     }
 }

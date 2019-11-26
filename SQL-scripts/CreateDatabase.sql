@@ -1,3 +1,5 @@
+--Script Version: Master - 1.1.0.0
+
 USE [master]
 GO
 

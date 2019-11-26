@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This procedure processes all of the events for the service_date being processed. It runs after the PreProcessDaily.
-
 IF OBJECT_ID('dbo.ClearData','P') IS NOT NULL
 	DROP PROCEDURE dbo.ClearData
 
@@ -17,7 +15,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE dbo.ClearData 
+CREATE PROCEDURE dbo.ClearData
+
+--Script Version: Master - 1.1.0.0 
+
+--This procedure processes all of the events for the service_date being processed. It runs after the PreProcessDaily.
 
 	@number_of_days		INT			--number of days to keep data
 

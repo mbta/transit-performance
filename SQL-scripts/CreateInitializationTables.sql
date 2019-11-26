@@ -1,3 +1,5 @@
+--Script Version: Master - 1.1.0.0
+
 --Only run this at the very start of setting up the system 
 
 ---run this script in the transit-performance database
@@ -161,6 +163,8 @@ CREATE TABLE rt_alert
 	,description_text			VARCHAR(3100)
 	,url						VARCHAR(255)
 	,closed						BIT NOT NULL DEFAULT 0
+	,first_file_time			INT
+	,last_file_time				INT
 	,PRIMARY KEY (alert_id, version_id)
 )
 
@@ -233,6 +237,38 @@ CREATE TABLE dbo.gtfsrt_tripupdate_denormalized(
 	)
 
 CREATE NONCLUSTERED INDEX IX_gtfsrt_tripupdate_denormalized_start_date ON gtfsrt_tripupdate_denormalized(trip_start_date);
+
+-- create gtfsrt_vehicleposition_denormalized to store all vehicle position data
+IF OBJECT_ID('dbo.gtfsrt_vehicleposition_denormalized', 'U') IS NOT NULL
+  DROP TABLE dbo.gtfsrt_vehicleposition_denormalized
+;
+
+CREATE TABLE dbo.gtfsrt_vehicleposition_denormalized(
+	gtfs_realtime_version 				VARCHAR(255) NOT NULL
+	,incrementality 					VARCHAR(255) 
+	,header_timestamp 					INT NOT NULL
+	,feed_entity_id 					VARCHAR(255) 
+	,trip_id 							VARCHAR(255) 
+	,route_id 							VARCHAR(255) 
+	,direction_id 						INT 
+	,trip_start_date 					CHAR(8) 
+	,trip_start_time 					VARCHAR(8) 
+	,trip_schedule_relationship 		VARCHAR(255) 
+	,vehicle_id 						VARCHAR(255) 
+	,vehicle_label 						VARCHAR(255) 
+	,vehicle_license_plate 				VARCHAR(255) 
+	,vehicle_timestamp 					INT 
+	,current_stop_sequence		 		INT 
+	,current_status 					VARCHAR(255) 
+	,stop_id 							VARCHAR(255) 
+	,congestion_level 					VARCHAR(255) 
+	,occupancy_status 					VARCHAR(255) 
+	,latitude 							FLOAT 
+	,longitude 							FLOAT 
+	,bearing 							FLOAT 
+	,odometer 							FLOAT 
+	,speed 								FLOAT 
+	)
 
 -- Create all historical tables 
 IF OBJECT_ID('dbo.historical_event','U') IS NOT NULL

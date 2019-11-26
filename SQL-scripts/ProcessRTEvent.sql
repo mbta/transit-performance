@@ -3,8 +3,6 @@
 --USE transit_performance
 --GO
 
---This procedure processes all the real-time events. It is executed by the process_rt_event trigger ON INSERT into the dbo.rt_event table.
-
 IF OBJECT_ID('ProcessRTEvent','P') IS NOT NULL
 	DROP PROCEDURE dbo.ProcessRTEvent
 
@@ -17,6 +15,9 @@ GO
 
 CREATE PROCEDURE dbo.ProcessRTEvent
 
+--Script Version: Master - 1.1.0.0
+
+--This procedure processes all the real-time events. It is executed by the process_rt_event trigger ON INSERT into the dbo.rt_event table.
 
 AS
 
