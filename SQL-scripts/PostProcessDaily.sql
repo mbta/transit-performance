@@ -17,7 +17,7 @@ GO
 
 CREATE PROCEDURE dbo.PostProcessDaily 
 
---Script Version: Master - 1.1.1.0
+--Script Version: Master - 1.1.2.0
 
 --This procedure processes all of the events for the service_date being processed. It runs after the PreProcessDaily.
 
@@ -3217,6 +3217,8 @@ BEGIN
 				mst.suspect_record = 1
 			AND 
 				mst.event_type IN ('DEP','PRD')
+			AND
+				abcde.cde_trip_id <> mst.trip_id	  
 
 	---DELETE headways between events with suspect records in the middle-------------------------------
 	DELETE FROM ##daily_abcde_time
@@ -3237,6 +3239,8 @@ BEGIN
 			mst.suspect_record = 1
 		AND 
 			mst.event_type IN ('DEP','PRD')
+		AND
+			abcde.cde_trip_id <> mst.trip_id	 
 
 	DELETE FROM ##daily_bd_sr_same_time
 	FROM
@@ -3256,6 +3260,8 @@ BEGIN
 			mst.suspect_record = 1
 		AND 
 			mst.event_type IN ('DEP','PRD')
+		AND
+			hsr.d_trip_id <> mst.trip_id	 
 
 	DELETE FROM ##daily_ac_sr_same_time
 	FROM
@@ -3275,6 +3281,8 @@ BEGIN
 			mst.suspect_record = 1
 		AND 
 			mst.event_type = 'ARR'
+		AND
+			hsr.c_trip_id <> mst.trip_id	 
 
 	DELETE FROM ##daily_bd_sr_all_time
 	FROM
@@ -3294,6 +3302,8 @@ BEGIN
 			mst.suspect_record = 1
 		AND 
 			mst.event_type IN ('DEP','PRD')
+		AND
+			hsr.d_trip_id <> mst.trip_id	 
 
 	--Create passenger weighted travel time vs. threshold tables 
 	IF OBJECT_ID('dbo.daily_travel_time_threshold_pax','U') IS NOT NULL
