@@ -155,7 +155,7 @@ UPDATE dbo.historical_metrics
 		,numerator_pax = l.original_numerator_pax
 		,denominator_pax = l.original_denominator_pax
 	FROM dbo.historical_metrics hm
-	LEFT JOIN
+	RIGHT JOIN
 	(
 	SELECT
 			service_date
@@ -237,7 +237,12 @@ UPDATE dbo.historical_metrics
 		SYSDATETIME()
 		,service_date
 		,route_id
-		,@disruption_type_process
+		,CASE
+			WHEN @disruption_type_process = '1' THEN 'disruption_type_01'
+			WHEN @disruption_type_process = '2' THEN 'disruption_type_02'
+			WHEN @disruption_type_process = '3' THEN 'disruption_type_03'
+			ELSE @disruption_type_process
+			END
 		,threshold_id
 		,time_period_type
 		,metric_result
@@ -1459,7 +1464,12 @@ BEGIN
 		SYSDATETIME()
 		,@service_date
 		,@route_id
-		,@disruption_type
+		,CASE
+			WHEN @disruption_type_process = '1' THEN 'disruption_type_01'
+			WHEN @disruption_type_process = '2' THEN 'disruption_type_02'
+			WHEN @disruption_type_process = '3' THEN 'disruption_type_03'
+			ELSE @disruption_type_process
+			END
 		,CASE
 			WHEN @disruption_type = 'reset' THEN NULL
 			ELSE @start_time_sec
@@ -1596,7 +1606,12 @@ BEGIN
 		SYSDATETIME()
 		,@service_date
 		,@route_id
-		,@disruption_type
+		,CASE
+			WHEN @disruption_type_process = '1' THEN 'disruption_type_01'
+			WHEN @disruption_type_process = '2' THEN 'disruption_type_02'
+			WHEN @disruption_type_process = '3' THEN 'disruption_type_03'
+			ELSE @disruption_type_process
+			END
 		,CASE
 			WHEN @disruption_type = 'reset' THEN NULL
 			ELSE @start_time_sec
