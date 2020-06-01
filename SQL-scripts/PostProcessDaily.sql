@@ -17,7 +17,7 @@ GO
 
 CREATE PROCEDURE dbo.PostProcessDaily 
 
---Script Version: Master - 1.1.2.0
+--Script Version: Master - 1.1.3.0
 
 --This procedure processes all of the events for the service_date being processed. It runs after the PreProcessDaily.
 
@@ -1955,25 +1955,13 @@ BEGIN
 						AND 
 							y.cde_trip_id <> x.cde_trip_id
 						AND 
-							CASE
-								WHEN
-										y.cde_route_id IN ('Green-B','Green-C','Green-D','Green-E')
-									OR 
-									(
-											y.cd_stop_id IN (SELECT stop_id FROM @multiple_berths)
-										AND 
-											y.cde_direction_id = (SELECT DISTINCT direction_id FROM @multiple_berths WHERE stop_id = y.cd_stop_id)
-									)
-								THEN y.d_time_sec
-								ELSE y.c_time_sec
-							END > x.d_time_sec --the arrival time of the current trip should be later than the departure time of the previous trip
-							--BUT compare departure times only for subway/Green Line terminals and Park Street (in both directions)
-						--, but not by more than 30 minutes, as determined by the next statement
+							y.d_time_sec > x.d_time_sec  --departure time of current trip should be later than dep time of earlier trip
+						--, but not by more than 30 minutes, as determined by the next statement 
 						AND 
 							CASE
 								WHEN y.cde_route_type <>3 THEN 2700
 								ELSE 3600
-							END >= y.c_time_sec - x.d_time_sec
+							END >= y.d_time_sec - x.d_time_sec
 		) temp
 	WHERE rn = 1
 
