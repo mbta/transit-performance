@@ -17,7 +17,7 @@ GO
 
 CREATE PROCEDURE dbo.PostProcessDaily 
 
---Script Version: Master - 1.1.3.0
+--Script Version: Master - 1.1.3.1
 
 --This procedure processes all of the events for the service_date being processed. It runs after the PreProcessDaily.
 
@@ -261,7 +261,7 @@ BEGIN
 	UPDATE dbo.daily_trip_updates
 		SET stop_id = ps.stop_id
 		FROM dbo.daily_trip_updates e
-		LEFT JOIN
+		JOIN
 		(
 			SELECT rds.route_type, rds.route_id, rds.direction_id, rds.stop_order, rds.stop_id, s.parent_station
 			FROM gtfs.route_direction_stop rds
@@ -472,7 +472,7 @@ BEGIN
 	UPDATE dbo.daily_event
 		SET stop_id = ps.stop_id
 		FROM dbo.daily_event e
-		LEFT JOIN
+		JOIN
 		(
 			SELECT rds.route_type, rds.route_id, rds.direction_id, rds.stop_order, rds.stop_id, s.parent_station
 			FROM gtfs.route_direction_stop rds
