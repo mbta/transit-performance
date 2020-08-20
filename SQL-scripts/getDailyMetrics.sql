@@ -16,7 +16,7 @@ GO
 
 CREATE PROCEDURE dbo.getDailyMetrics
 
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.2.0.0
 
 --This stored procedure is called by the dailymetrics API call.  It selects daily metrics for a particular route (or all routes) and time period.
 
@@ -28,6 +28,8 @@ AS
 
 BEGIN
 	SET NOCOUNT ON;
+
+	DECLARE @limit_date DATE = DATEADD(DAY, -90, CONVERT(DATE,GETDATE())) 
 
 	DECLARE @metricstemp AS TABLE
 	(
@@ -64,7 +66,6 @@ BEGIN
 			FROM dbo.historical_metrics
 
 			WHERE
-
 					(
 						(SELECT COUNT(str_val) FROM @route_ids) = 0
 					OR 
@@ -76,7 +77,6 @@ BEGIN
 					service_date <= @to_date
 				AND 
 					route_id IN ('Red','Orange','Blue','Green-B','Green-C','Green-D','Green-E')
-
 
 	END --if a timespan is less than 31 days and routes are only subway/light rail, then do the processing, if not return empty set
 
@@ -90,6 +90,7 @@ BEGIN
 		,metric_result
 		,metric_result_trip
 	FROM @metricstemp
+	WHERE service_date > = @limit_date
 	ORDER BY
 		service_date,route_id,threshold_id,time_period_type
 

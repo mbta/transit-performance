@@ -16,7 +16,7 @@ GO
 
 CREATE PROCEDURE dbo.getPredictionMetrics
 
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.2.0.0
 
 --This stored procedure is called by the predictionmetrics API call.  It selects prediction metrics for a particular route(s), direction(s), and stop(s) and time period.
 
@@ -52,6 +52,8 @@ BEGIN
 
 	DECLARE @service_date_to DATE
 	SET @service_date_to = dbo.fnConvertDateTimeToServiceDate(@to_time)
+
+	DECLARE @limit_date DATE = DATEADD(DAY, -90, CONVERT(DATE,GETDATE()))
 
 	IF @service_date_from = @service_date_to --only return results for one day
 	
@@ -104,6 +106,7 @@ BEGIN
 		,total_predictions_in_bin
 		,metric_result
 	FROM @metricstemp
+	WHERE service_date > = @limit_date
 	ORDER BY
 		service_date
 		,route_id

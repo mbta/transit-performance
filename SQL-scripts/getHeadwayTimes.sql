@@ -19,7 +19,7 @@ GO
 
 CREATE PROCEDURE dbo.getHeadwayTimes
 
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.2.0.0
 
 --This Procedure is called by the headway API call. It selects headways  for a particular stop (and optionally to_stop or route + direction) and time period.
 
@@ -37,9 +37,12 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @limit_date DATE = DATEADD(DAY, -90, CONVERT(DATE,GETDATE())) 
+
 	DECLARE @headwaytimestemp AS TABLE
 	(
-		route_id					VARCHAR(255)
+		service_date				DATE
+		,route_id					VARCHAR(255)
 		,prev_route_id				VARCHAR(255)
 		,direction_id				INT
 		,start_time					DATETIME
@@ -73,7 +76,8 @@ BEGIN
 					INSERT INTO @headwaytimestemp
 						
 						SELECT --selects headways from today, if the from_time and to_time are today
-							htt.route_id
+							htt.service_date
+							,htt.route_id
 							,htt.prev_route_id
 							,htt.direction_id
 							,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
@@ -156,7 +160,8 @@ BEGIN
 					INSERT INTO @headwaytimestemp
 						
 						SELECT --selects headways from today, if the from_time and to_time are today
-							htt.route_id
+							htt.service_date
+							,htt.route_id
 							,htt.prev_route_id
 							,htt.direction_id
 							,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
@@ -245,7 +250,8 @@ BEGIN
 					INSERT INTO @headwaytimestemp
 						
 						SELECT --selects headways from today, if the from_time and to_time are today
-							htt.route_id
+							htt.service_date
+							,htt.route_id
 							,htt.prev_route_id
 							,htt.direction_id
 							,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
@@ -340,7 +346,8 @@ BEGIN
 					INSERT INTO @headwaytimestemp
 						
 						SELECT --selects headways from days in the past, if the from_time and to_time are not today
-							htt.route_id
+							htt.service_date
+							,htt.route_id
 							,htt.prev_route_id
 							,htt.direction_id
 							,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
@@ -423,7 +430,8 @@ BEGIN
 					INSERT INTO @headwaytimestemp
 						
 						SELECT --selects headways from days in the past, if the from_time and to_time are not today
-							htt.route_id
+							htt.service_date
+							,htt.route_id
 							,htt.prev_route_id
 							,htt.direction_id
 							,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
@@ -512,7 +520,8 @@ BEGIN
 					INSERT INTO @headwaytimestemp
 						
 						SELECT --selects headways from days in the past, if the from_time and to_time are not today
-							htt.route_id
+							htt.service_date
+							,htt.route_id
 							,htt.prev_route_id
 							,htt.direction_id
 							,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
@@ -612,7 +621,9 @@ BEGIN
 	ON
 		h.route_id = r.route_id
 	WHERE
-		r.route_type <> 2 --do not return results for Commuter Rail
+			r.route_type <> 2 --do not return results for Commuter Rail
+		AND
+			service_date >= @limit_date
 	ORDER BY end_time
 
 END

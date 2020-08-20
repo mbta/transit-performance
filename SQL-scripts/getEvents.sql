@@ -16,7 +16,7 @@ GO
 
 CREATE PROCEDURE dbo.getEvents
 
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.2.0.0
 
 --This stored procedure is called by the getEvents API call.  It selects events for a particular route, direction, stop and time period.
 	
@@ -53,6 +53,8 @@ BEGIN
 
 	DECLARE @service_date_to DATE
 	SET @service_date_to = dbo.fnConvertDateTimeToServiceDate(@to_time)
+
+	DECLARE @limit_date DATE = DATEADD(DAY, -90, CONVERT(DATE,GETDATE())) 
 
 	IF (@service_date_from = @service_date_to) --only return results for one day
 
@@ -202,7 +204,9 @@ BEGIN
 	ON
 		e.route_id = r.route_id
 	WHERE
-		r.route_type <> 2 --do not return results for Commuter Rail
+			r.route_type <> 2 --do not return results for Commuter Rail
+		AND
+			service_date >= @limit_date
 	ORDER BY event_time
 
 END

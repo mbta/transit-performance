@@ -16,7 +16,7 @@ GO
 
 CREATE PROCEDURE dbo.getDailyPredictionMetrics
 
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.2.0.0
 
 --This stored procedure is called by the dailypredictionmetrics API call.  It selects daily prediction metrics for a particular route (or all routes) and time period.
 
@@ -28,6 +28,8 @@ AS
 
 BEGIN
 	SET NOCOUNT ON;
+
+	DECLARE @limit_date DATE = DATEADD(DAY, -90, CONVERT(DATE,GETDATE()))
 
 	DECLARE @metricstemp AS TABLE
 	(
@@ -41,17 +43,11 @@ BEGIN
 
 	IF
 		(
-		(DATEDIFF(D,@from_date,@to_date) <= 31)
-		AND (
-		(
-			SELECT
-				COUNT(str_val)
-			FROM @route_ids
-			WHERE
-				str_val NOT IN ('Red','Orange','Blue','Green-B','Green-C','Green-D','Green-E', 'Mattapan')
+			(DATEDIFF(D,@from_date,@to_date) <= 31)
+		AND 
+			((SELECT COUNT(str_val) FROM @route_ids WHERE str_val NOT IN ('Red','Orange','Blue','Green-B','Green-C','Green-D','Green-E', 'Mattapan')) = 0)
 		)
-		= 0)
-		)
+
 	BEGIN --if a timespan is less than 31 days and routes are only subway/light rail, then do the processing, if not return empty set
 
 		INSERT INTO @metricstemp
@@ -66,25 +62,18 @@ BEGIN
 			FROM dbo.historical_prediction_metrics
 
 			WHERE
-
 				(
-					(
-						SELECT
-							COUNT(str_val)
-						FROM @route_ids
-					)
-					= 0
-					OR route_id IN
-					(
-						SELECT
-							str_val
-						FROM @route_ids
+						(SELECT COUNT(str_val) FROM @route_ids) = 0
+					OR 
+						route_id IN (SELECT str_val FROM @route_ids
 					)
 				)
-				AND service_date >= @from_date
-				AND service_date <= @to_date
-				AND route_id IN ('Red','Orange','Blue','Green-B','Green-C','Green-D','Green-E','Mattapan')
-
+				AND 
+					service_date >= @from_date
+				AND 
+					service_date <= @to_date
+				AND 
+					route_id IN ('Red','Orange','Blue','Green-B','Green-C','Green-D','Green-E','Mattapan')
 
 	END --if a timespan is less than 31 days and routes are only subway/light rail, then do the processing, if not return empty set
 
@@ -96,6 +85,7 @@ BEGIN
 		,threshold_type
 		,metric_result
 	FROM @metricstemp
+	WHERE service_date > = @limit_date
 	ORDER BY
 		service_date,route_id,threshold_id
 
