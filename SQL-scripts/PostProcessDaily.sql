@@ -1696,7 +1696,7 @@ BEGIN
 			,ede.stop_sequence AS e_stop_sequence
 			,edd.direction_id AS de_direction_id
 			,edd.route_id AS de_route_id
-			,edd.route_type AS route_type
+			,edd.route_type AS de_route_type
 			,edd.trip_id AS de_trip_id
 			,edd.vehicle_id AS de_vehicle_id
 			,edd.record_id AS d_record_id
