@@ -20,14 +20,14 @@ GO
 
 CREATE PROCEDURE dbo.getTravelTimes
 
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.2.0.0
 
 --This Procedure is called by the traveltimes API call. It selects travel times for a particular from_stop and to_stop pair (and optionally route)
 --and time period.
 
-	@from_stop_id VARCHAR(255)
-	,@to_stop_id VARCHAR(255)
-	,@from_time DATETIME
+	@from_stop_id VARCHAR(255) 
+	,@to_stop_id VARCHAR(255) 
+	,@from_time DATETIME 
 	,@to_time DATETIME
 	,@route_id VARCHAR(255)
 
@@ -37,9 +37,12 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @limit_date DATE = DATEADD(DAY, -90, CONVERT(DATE,GETDATE())) 
+
 	DECLARE @traveltimestemp AS TABLE
 	(
-		route_id					VARCHAR(255)
+		service_date				DATE
+		,route_id					VARCHAR(255)
 		,direction_id				INT
 		,start_time					DATETIME
 		,end_time					DATETIME
@@ -56,7 +59,8 @@ BEGIN
 
 		INSERT INTO @traveltimestemp
 			SELECT --selects travel times from today, if the from_time and to_time are today
-				htt.route_id
+				htt.service_date
+				,htt.route_id
 				,htt.direction_id
 				,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
 				,DATEADD(s,htt.end_time_sec,htt.service_date) AS end_time
@@ -137,7 +141,8 @@ BEGIN
 			UNION
 
 			SELECT --selects travel times from days in the past, if the from_time and to_time are not today
-				htt.route_id
+				htt.service_date
+				,htt.route_id
 				,htt.direction_id
 				,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
 				,DATEADD(s,htt.end_time_sec,htt.service_date) AS end_time
@@ -222,7 +227,8 @@ BEGIN
 			UNION
 
 			SELECT --selects travel times from today, if the from_time and to_time are today
-				htt.route_id
+				htt.service_date
+				,htt.route_id
 				,htt.direction_id
 				,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
 				,DATEADD(s,htt.end_time_sec,htt.service_date) AS end_time
@@ -304,7 +310,8 @@ BEGIN
 			--commuter rail thresholds for travel time
 
 			SELECT --selects travel times from days in the past, if the from_time and to_time are not today
-				htt.route_id
+				htt.service_date
+				,htt.route_id
 				,htt.direction_id
 				,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
 				,DATEADD(s,htt.end_time_sec,htt.service_date) AS end_time
@@ -385,7 +392,8 @@ BEGIN
 			UNION
 
 			SELECT --selects travel times from today, if the from_time and to_time are today
-				htt.route_id
+				htt.service_date
+				,htt.route_id
 				,htt.direction_id
 				,DATEADD(s,htt.start_time_sec,htt.service_date) AS start_time
 				,DATEADD(s,htt.end_time_sec,htt.service_date) AS end_time
@@ -470,7 +478,9 @@ BEGIN
 	ON
 		t.route_id = r.route_id
 	WHERE
-		r.route_type <> 2 --do not return results for Commuter Rail
+			r.route_type <> 2 --do not return results for Commuter Rail
+		AND
+			service_date >= @limit_date
 	ORDER BY end_time 
 
 END

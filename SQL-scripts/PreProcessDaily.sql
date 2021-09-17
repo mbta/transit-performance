@@ -261,7 +261,7 @@ BEGIN
 		,stop_id					VARCHAR(255)	NOT NULL
 		,arrival_time_sec			INT				NOT NULL
 		,departure_time_sec			INT				NOT NULL
-		,pickup_type				INT				NOT NULL
+		,pickup_type				INT
 		,trip_order					INT				NOT NULL
 		,trip_first_stop_sequence	INT  --needed for cr
 		,trip_first_stop_id			VARCHAR(255)	NOT NULL --needed for cr
@@ -570,7 +570,7 @@ BEGIN
 		,scheduled_arrival_headway_time_sec		INT
 		,ab_departure_pickup_type				INT
 		,ab_arrival_pickup_type					INT
-		,cd_pickup_type							INT				NOT NULL
+		,cd_pickup_type							INT
 		--,stop_trip_sequence					INT				NOT NULL
 	)
 	;
@@ -607,8 +607,8 @@ BEGIN
 	SELECT
 		service_date
 		,CASE
-			WHEN @use_checkpoints_only = 0 AND pickup_type = 0 THEN LAG(stop_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
-			WHEN @use_checkpoints_only = 1 AND pickup_type = 0 THEN LAG(stop_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 0 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(stop_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 1 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(stop_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
 		END as ab_departure_stop_id
 		,CASE
 			WHEN @use_checkpoints_only = 0 THEN LAG(stop_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id ORDER BY departure_time_sec)
@@ -616,8 +616,8 @@ BEGIN
 		END as ab_arrival_stop_id
 		,stop_id as cd_stop_id
 		,CASE
-			WHEN @use_checkpoints_only = 0 AND pickup_type = 0 THEN LAG(stop_sequence, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
-			WHEN @use_checkpoints_only = 1 AND pickup_type = 0 THEN LAG(stop_sequence, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 0 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(stop_sequence, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 1 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(stop_sequence, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
 		END as ab_departure_stop_sequence
 		,CASE
 			WHEN @use_checkpoints_only = 0 THEN LAG(stop_sequence, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id ORDER BY departure_time_sec)
@@ -626,8 +626,8 @@ BEGIN
 		,stop_sequence as cd_stop_sequence
 		,checkpoint_id
 		,CASE
-			WHEN @use_checkpoints_only = 0 AND pickup_type = 0 THEN LAG(stop_order_flag, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
-			WHEN @use_checkpoints_only = 1 AND pickup_type = 0 THEN LAG(stop_order_flag, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 0 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(stop_order_flag, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 1 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(stop_order_flag, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
 		END as ab_departure_stop_order_flag
 		,CASE
 			WHEN @use_checkpoints_only = 0 THEN LAG(stop_order_flag, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id ORDER BY departure_time_sec)
@@ -638,8 +638,8 @@ BEGIN
 		,route_id
 		,direction_id
 		,CASE
-			WHEN @use_checkpoints_only = 0 AND pickup_type = 0 THEN LAG(trip_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
-			WHEN @use_checkpoints_only = 1 AND pickup_type = 0 THEN LAG(trip_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 0 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(trip_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 1 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(trip_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
 		END as ab_departure_trip_id
 		,CASE
 			WHEN @use_checkpoints_only = 0 THEN LAG(trip_id, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id ORDER BY departure_time_sec)
@@ -647,8 +647,8 @@ BEGIN
 		END as ab_arrival_trip_id
 		,trip_id as cd_trip_id
 		,CASE
-			WHEN @use_checkpoints_only = 0 AND pickup_type = 0 THEN LAG(departure_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
-			WHEN @use_checkpoints_only = 1 AND pickup_type = 0 THEN LAG(departure_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 0 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(departure_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 1 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(departure_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
 		END as b_time_sec
 		,departure_time_sec as d_time_sec
 		,CASE
@@ -657,16 +657,16 @@ BEGIN
 		END as a_time_sec
 		,arrival_time_sec as c_time_sec
 		,CASE
-			WHEN @use_checkpoints_only = 0 AND pickup_type = 0 THEN departure_time_sec - LAG(departure_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
-			WHEN @use_checkpoints_only = 1 AND pickup_type = 0 THEN departure_time_sec - LAG(departure_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 0 AND (pickup_type = 0 OR pickup_type IS NULL) THEN departure_time_sec - LAG(departure_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 1 AND (pickup_type = 0 OR pickup_type IS NULL) THEN departure_time_sec - LAG(departure_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
 		END as scheduled_departure_headway_time_sec
 		,CASE
 			WHEN @use_checkpoints_only = 0 THEN arrival_time_sec - LAG(arrival_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id ORDER BY arrival_time_sec)
 			WHEN @use_checkpoints_only = 1 THEN arrival_time_sec - LAG(arrival_time_sec, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id ORDER BY arrival_time_sec)
 		END as scheduled_arrival_headway_time_sec
 		,CASE
-			WHEN @use_checkpoints_only = 0 AND pickup_type = 0 THEN LAG(pickup_type, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
-			WHEN @use_checkpoints_only = 1 AND pickup_type = 0 THEN LAG(pickup_type, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 0 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(pickup_type, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id, pickup_type ORDER BY departure_time_sec)
+			WHEN @use_checkpoints_only = 1 AND (pickup_type = 0 OR pickup_type IS NULL) THEN LAG(pickup_type, 1) OVER (PARTITION BY service_date, route_id, direction_id, checkpoint_id, pickup_type ORDER BY departure_time_sec)
 		END as ab_departure_pickup_type
 		,CASE
 			WHEN @use_checkpoints_only = 0 THEN LAG(pickup_type, 1) OVER (PARTITION BY service_date, route_id, direction_id, stop_id ORDER BY departure_time_sec)

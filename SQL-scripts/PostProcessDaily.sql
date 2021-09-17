@@ -17,7 +17,7 @@ GO
 
 CREATE PROCEDURE dbo.PostProcessDaily 
 
---Script Version: Master - 1.1.1.0
+--Script Version: Master - 1.1.3.1
 
 --This procedure processes all of the events for the service_date being processed. It runs after the PreProcessDaily.
 
@@ -261,7 +261,7 @@ BEGIN
 	UPDATE dbo.daily_trip_updates
 		SET stop_id = ps.stop_id
 		FROM dbo.daily_trip_updates e
-		LEFT JOIN
+		JOIN
 		(
 			SELECT rds.route_type, rds.route_id, rds.direction_id, rds.stop_order, rds.stop_id, s.parent_station
 			FROM gtfs.route_direction_stop rds
@@ -472,7 +472,7 @@ BEGIN
 	UPDATE dbo.daily_event
 		SET stop_id = ps.stop_id
 		FROM dbo.daily_event e
-		LEFT JOIN
+		JOIN
 		(
 			SELECT rds.route_type, rds.route_id, rds.direction_id, rds.stop_order, rds.stop_id, s.parent_station
 			FROM gtfs.route_direction_stop rds
@@ -1696,7 +1696,7 @@ BEGIN
 			,ede.stop_sequence AS e_stop_sequence
 			,edd.direction_id AS de_direction_id
 			,edd.route_id AS de_route_id
-			,edd.route_type AS route_type
+			,edd.route_type AS de_route_type
 			,edd.trip_id AS de_trip_id
 			,edd.vehicle_id AS de_vehicle_id
 			,edd.record_id AS d_record_id
@@ -1955,25 +1955,13 @@ BEGIN
 						AND 
 							y.cde_trip_id <> x.cde_trip_id
 						AND 
-							CASE
-								WHEN
-										y.cde_route_id IN ('Green-B','Green-C','Green-D','Green-E')
-									OR 
-									(
-											y.cd_stop_id IN (SELECT stop_id FROM @multiple_berths)
-										AND 
-											y.cde_direction_id = (SELECT DISTINCT direction_id FROM @multiple_berths WHERE stop_id = y.cd_stop_id)
-									)
-								THEN y.d_time_sec
-								ELSE y.c_time_sec
-							END > x.d_time_sec --the arrival time of the current trip should be later than the departure time of the previous trip
-							--BUT compare departure times only for subway/Green Line terminals and Park Street (in both directions)
-						--, but not by more than 30 minutes, as determined by the next statement
+							y.d_time_sec > x.d_time_sec  --departure time of current trip should be later than dep time of earlier trip
+						--, but not by more than 30 minutes, as determined by the next statement 
 						AND 
 							CASE
 								WHEN y.cde_route_type <>3 THEN 2700
 								ELSE 3600
-							END >= y.c_time_sec - x.d_time_sec
+							END >= y.d_time_sec - x.d_time_sec
 		) temp
 	WHERE rn = 1
 
@@ -3217,6 +3205,8 @@ BEGIN
 				mst.suspect_record = 1
 			AND 
 				mst.event_type IN ('DEP','PRD')
+			AND
+				abcde.cde_trip_id <> mst.trip_id	  
 
 	---DELETE headways between events with suspect records in the middle-------------------------------
 	DELETE FROM ##daily_abcde_time
@@ -3237,6 +3227,8 @@ BEGIN
 			mst.suspect_record = 1
 		AND 
 			mst.event_type IN ('DEP','PRD')
+		AND
+			abcde.cde_trip_id <> mst.trip_id	 
 
 	DELETE FROM ##daily_bd_sr_same_time
 	FROM
@@ -3256,6 +3248,8 @@ BEGIN
 			mst.suspect_record = 1
 		AND 
 			mst.event_type IN ('DEP','PRD')
+		AND
+			hsr.d_trip_id <> mst.trip_id	 
 
 	DELETE FROM ##daily_ac_sr_same_time
 	FROM
@@ -3275,6 +3269,8 @@ BEGIN
 			mst.suspect_record = 1
 		AND 
 			mst.event_type = 'ARR'
+		AND
+			hsr.c_trip_id <> mst.trip_id	 
 
 	DELETE FROM ##daily_bd_sr_all_time
 	FROM
@@ -3294,6 +3290,8 @@ BEGIN
 			mst.suspect_record = 1
 		AND 
 			mst.event_type IN ('DEP','PRD')
+		AND
+			hsr.d_trip_id <> mst.trip_id	 
 
 	--Create passenger weighted travel time vs. threshold tables 
 	IF OBJECT_ID('dbo.daily_travel_time_threshold_pax','U') IS NOT NULL
@@ -4211,45 +4209,45 @@ BEGIN
 	
 	SELECT
 		CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_service_date 
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_service_date 
 			ELSE acbd.ac_service_date
 		END AS service_date
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_route_id 
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_route_id 
 			ELSE acbd.ac_route_id
 		END AS route_id
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_route_type
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_route_type
 			ELSE acbd.ac_route_type
 		END AS route_type
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_direction_id
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_direction_id
 			ELSE acbd.ac_direction_id
 		END AS direction_id
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.d_trip_id
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.d_trip_id
 			ELSE acbd.c_trip_id
 		END AS trip_id
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_stop_id
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_stop_id
 			ELSE acbd.ac_stop_id
 		END AS stop_id
 		,st.cd_stop_order_flag
 		,st.checkpoint_id
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.b_time_sec
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.b_time_sec
 			ELSE acbd.a_time_sec
 		END AS start_time_sec
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.d_time_sec
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.d_time_sec
 			ELSE acbd.c_time_sec
 		END AS end_time_sec
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_time_sec
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_time_sec
 			ELSE acbd.ac_time_sec 
 		END AS actual_headway_time_sec
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN st.scheduled_departure_headway_time_sec
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN st.scheduled_departure_headway_time_sec
 			ELSE st.scheduled_arrival_headway_time_sec
 		END AS scheduled_headway_time_sec
 		,st.c_time_sec AS scheduled_arrival_time_sec
@@ -4258,24 +4256,24 @@ BEGIN
 		,th.threshold_id_lower
 		,th.threshold_id_upper
 		,CASE
-			WHEN st.cd_pickup_type = 0 THEN st.scheduled_departure_headway_time_sec * thc1.multiply_by + thc1.add_to
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN st.scheduled_departure_headway_time_sec * thc1.multiply_by + thc1.add_to
 			ELSE st.scheduled_arrival_headway_time_sec * thc1.multiply_by + thc1.add_to
 		END as threshold_value_lower
 		,CASE
-			WHEN st.cd_pickup_type = 0 THEN st.scheduled_departure_headway_time_sec * thc2.multiply_by + thc2.add_to
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN st.scheduled_departure_headway_time_sec * thc2.multiply_by + thc2.add_to
 			ELSE st.scheduled_arrival_headway_time_sec * thc2.multiply_by + thc2.add_to
 		END as threshold_value_upper
 		,ctp.time_period_type as time_period_type
 		,1 as denominator_pax
 		,CASE
-			WHEN st.cd_pickup_type = 0 THEN
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN
 				CASE
 					WHEN acbd.bd_time_sec NOT BETWEEN ISNULL(st.scheduled_departure_headway_time_sec * thc1.multiply_by + thc1.add_to, acbd.bd_time_sec) 
 							AND ISNULL(st.scheduled_departure_headway_time_sec * thc2.multiply_by + thc2.add_to, acbd.bd_time_sec) THEN 1 --par.passenger_arrival_rate
 					WHEN acbd.bd_time_sec BETWEEN ISNULL(st.scheduled_departure_headway_time_sec * thc1.multiply_by + thc1.add_to, acbd.bd_time_sec) 
 							AND ISNULL(st.scheduled_departure_headway_time_sec * thc2.multiply_by + thc2.add_to, acbd.bd_time_sec) THEN 0 --par.passenger_arrival_rate
 				END
-			WHEN st.cd_pickup_type <> 0 THEN
+			WHEN (st.cd_pickup_type <> 0 AND st.cd_pickup_type IS NOT NULL) THEN
 				CASE
 					WHEN acbd.ac_time_sec NOT BETWEEN ISNULL(st.scheduled_arrival_headway_time_sec * thc1.multiply_by + thc1.add_to, acbd.ac_time_sec) 
 							AND ISNULL(st.scheduled_arrival_headway_time_sec * thc2.multiply_by + thc2.add_to, acbd.ac_time_sec) THEN 1 --par.passenger_arrival_rate
@@ -4354,9 +4352,9 @@ BEGIN
 					(acbd.d_stop_sequence = st.cd_stop_sequence OR acbd.c_stop_sequence = st.cd_stop_sequence)
 				AND 
 					(
-						(st.cd_pickup_type = 0 AND acbd.bd_time_sec IS NOT NULL) 
+						((st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) AND acbd.bd_time_sec IS NOT NULL) 
 					OR 
-						(st.cd_pickup_type <> 0 and acbd.ac_time_sec IS NOT NULL)
+						((st.cd_pickup_type <> 0 AND st.cd_pickup_type IS NOT NULL) and acbd.ac_time_sec IS NOT NULL)
 					)
 		CROSS JOIN 
 			(

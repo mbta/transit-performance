@@ -1,4 +1,4 @@
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.2.0.0
 
 --Only run this at the very start of setting up the system 
 
@@ -1043,4 +1043,31 @@ CREATE TABLE dbo.config_dashboard_threshold
 	dashboard_id	VARCHAR(255) PRIMARY KEY
 	,dashboard_name	VARCHAR(255)
 	,threshold_id	VARCHAR(255)
+)
+
+--Create Revised Historical Metrics Log Table
+IF OBJECT_ID('dbo.revise_historical_metrics_log','U') IS NOT NULL
+	DROP TABLE dbo.revise_historical_metrics_log
+
+CREATE TABLE dbo.revise_historical_metrics_log
+(
+	revise_datetime				DATETIME2
+	,service_date				DATE
+	,route_id					VARCHAR(255)
+	,disruption_type			VARCHAR(255)
+	,start_time_sec				INT
+	,end_time_sec				INT
+	,from_stop_order_0			INT
+	,to_stop_order_0			INT
+	,from_stop_order_1			INT
+	,to_stop_order_1			INT
+	,ashmont_flag				BIT
+	,threshold_id				VARCHAR(255)
+	,time_period_type			VARCHAR(255)
+	,original_metric_result		FLOAT
+	,original_numerator_pax		FLOAT
+	,original_denominator_pax	FLOAT
+	,revised_metric_result		FLOAT
+	,revised_numerator_pax		FLOAT
+	,revised_denominator_pax	FLOAT
 )

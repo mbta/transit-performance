@@ -16,7 +16,7 @@ GO
 
 CREATE PROCEDURE dbo.getDwellTimes
 
---Script Version: Master - 1.1.0.0
+--Script Version: Master - 1.2.0.0
 
 --This Procedure is called by the dwelltimes API call. It selects dwell times for a particular stop (and optionally route + direction) and time period.
 
@@ -33,9 +33,12 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @limit_date DATE = DATEADD(DAY, -90, CONVERT(DATE,GETDATE())) 
+
 	DECLARE @dwelltimestemp AS TABLE
 	(
-		route_id		VARCHAR(255)
+		service_date	DATE
+		,route_id		VARCHAR(255)
 		,direction_id	INT
 		,start_time		DATETIME
 		,end_time		DATETIME
@@ -48,7 +51,8 @@ BEGIN
 
 		INSERT INTO @dwelltimestemp
 			SELECT --selects dwell times from today, if the from_time and to_time are today
-				route_id
+				service_date
+				,route_id
 				,direction_id
 				,DATEADD(s,start_time_sec,service_date) AS start_time
 				,DATEADD(s,end_time_sec,service_date) AS end_time
@@ -68,7 +72,8 @@ BEGIN
 			UNION
 
 			SELECT --selects dwell times from other days in the past, if the from_time and to_time are not today
-				route_id
+				service_date
+				,route_id
 				,direction_id
 				,DATEADD(s,start_time_sec,service_date) AS start_time
 				,DATEADD(s,end_time_sec,service_date) AS end_time
@@ -98,7 +103,9 @@ BEGIN
 	ON
 		d.route_id = r.route_id
 	WHERE
-		r.route_type <> 2 --do not return results for Commuter Rail
+			r.route_type <> 2 --do not return results for Commuter Rail
+		AND
+			service_date >= @limit_date
 	ORDER BY end_time
 
 END
