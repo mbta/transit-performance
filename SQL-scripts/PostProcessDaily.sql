@@ -4209,45 +4209,45 @@ BEGIN
 	
 	SELECT
 		CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_service_date 
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_service_date 
 			ELSE acbd.ac_service_date
 		END AS service_date
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_route_id 
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_route_id 
 			ELSE acbd.ac_route_id
 		END AS route_id
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_route_type
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_route_type
 			ELSE acbd.ac_route_type
 		END AS route_type
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_direction_id
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_direction_id
 			ELSE acbd.ac_direction_id
 		END AS direction_id
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.d_trip_id
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.d_trip_id
 			ELSE acbd.c_trip_id
 		END AS trip_id
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_stop_id
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_stop_id
 			ELSE acbd.ac_stop_id
 		END AS stop_id
 		,st.cd_stop_order_flag
 		,st.checkpoint_id
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.b_time_sec
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.b_time_sec
 			ELSE acbd.a_time_sec
 		END AS start_time_sec
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.d_time_sec
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.d_time_sec
 			ELSE acbd.c_time_sec
 		END AS end_time_sec
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN acbd.bd_time_sec
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN acbd.bd_time_sec
 			ELSE acbd.ac_time_sec 
 		END AS actual_headway_time_sec
 		,CASE 
-			WHEN st.cd_pickup_type = 0 THEN st.scheduled_departure_headway_time_sec
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN st.scheduled_departure_headway_time_sec
 			ELSE st.scheduled_arrival_headway_time_sec
 		END AS scheduled_headway_time_sec
 		,st.c_time_sec AS scheduled_arrival_time_sec
@@ -4256,24 +4256,24 @@ BEGIN
 		,th.threshold_id_lower
 		,th.threshold_id_upper
 		,CASE
-			WHEN st.cd_pickup_type = 0 THEN st.scheduled_departure_headway_time_sec * thc1.multiply_by + thc1.add_to
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN st.scheduled_departure_headway_time_sec * thc1.multiply_by + thc1.add_to
 			ELSE st.scheduled_arrival_headway_time_sec * thc1.multiply_by + thc1.add_to
 		END as threshold_value_lower
 		,CASE
-			WHEN st.cd_pickup_type = 0 THEN st.scheduled_departure_headway_time_sec * thc2.multiply_by + thc2.add_to
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN st.scheduled_departure_headway_time_sec * thc2.multiply_by + thc2.add_to
 			ELSE st.scheduled_arrival_headway_time_sec * thc2.multiply_by + thc2.add_to
 		END as threshold_value_upper
 		,ctp.time_period_type as time_period_type
 		,1 as denominator_pax
 		,CASE
-			WHEN st.cd_pickup_type = 0 THEN
+			WHEN (st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) THEN
 				CASE
 					WHEN acbd.bd_time_sec NOT BETWEEN ISNULL(st.scheduled_departure_headway_time_sec * thc1.multiply_by + thc1.add_to, acbd.bd_time_sec) 
 							AND ISNULL(st.scheduled_departure_headway_time_sec * thc2.multiply_by + thc2.add_to, acbd.bd_time_sec) THEN 1 --par.passenger_arrival_rate
 					WHEN acbd.bd_time_sec BETWEEN ISNULL(st.scheduled_departure_headway_time_sec * thc1.multiply_by + thc1.add_to, acbd.bd_time_sec) 
 							AND ISNULL(st.scheduled_departure_headway_time_sec * thc2.multiply_by + thc2.add_to, acbd.bd_time_sec) THEN 0 --par.passenger_arrival_rate
 				END
-			WHEN st.cd_pickup_type <> 0 THEN
+			WHEN (st.cd_pickup_type <> 0 AND st.cd_pickup_type IS NOT NULL) THEN
 				CASE
 					WHEN acbd.ac_time_sec NOT BETWEEN ISNULL(st.scheduled_arrival_headway_time_sec * thc1.multiply_by + thc1.add_to, acbd.ac_time_sec) 
 							AND ISNULL(st.scheduled_arrival_headway_time_sec * thc2.multiply_by + thc2.add_to, acbd.ac_time_sec) THEN 1 --par.passenger_arrival_rate
@@ -4352,9 +4352,9 @@ BEGIN
 					(acbd.d_stop_sequence = st.cd_stop_sequence OR acbd.c_stop_sequence = st.cd_stop_sequence)
 				AND 
 					(
-						(st.cd_pickup_type = 0 AND acbd.bd_time_sec IS NOT NULL) 
+						((st.cd_pickup_type = 0 OR st.cd_pickup_type IS NULL) AND acbd.bd_time_sec IS NOT NULL) 
 					OR 
-						(st.cd_pickup_type <> 0 and acbd.ac_time_sec IS NOT NULL)
+						((st.cd_pickup_type <> 0 AND st.cd_pickup_type IS NOT NULL) and acbd.ac_time_sec IS NOT NULL)
 					)
 		CROSS JOIN 
 			(
